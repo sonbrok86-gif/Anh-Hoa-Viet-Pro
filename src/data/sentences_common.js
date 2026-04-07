@@ -1,0 +1,217 @@
+export const sentences_common = [
+  { en: "How much is this?", zh: "这个多少钱？", pinyin: "zhè ge duō shǎo qián", vi: "Cái này bao nhiêu?" },
+  { en: "Can you help me?", zh: "你可以帮我吗？", pinyin: "nǐ kě yǐ bāng wǒ ma", vi: "Bạn giúp tôi được không?" },
+  { en: "I don't understand.", zh: "我不明白", pinyin: "wǒ bù míng bái", vi: "Tôi không hiểu" },
+  { en: "Please speak slowly.", zh: "请说慢一点", pinyin: "qǐng shuō màn yì diǎn", vi: "Nói chậm lại" },
+  { en: "Where is the bathroom?", zh: "厕所在哪里？", pinyin: "cè suǒ zài nǎ lǐ", vi: "Nhà vệ sinh ở đâu?" },
+  { en: "Let's start.", zh: "我们开始吧", pinyin: "wǒ men kāi shǐ ba", vi: "Bắt đầu thôi" },
+  { en: "Wait a moment.", zh: "等一下", pinyin: "děng yí xià", vi: "Đợi chút" },
+  { en: "I agree.", zh: "我同意", pinyin: "wǒ tóng yì", vi: "Tôi đồng ý" },
+  { en: "That's a good idea.", zh: "这是个好主意", pinyin: "zhè shì gè hǎo zhǔ yì", vi: "Ý hay đó" },
+  { en: "No problem.", zh: "没问题", pinyin: "méi wèn tí", vi: "Không vấn đề" },
+  { en: "I am busy today.", zh: "我今天很忙", pinyin: "wǒ jīn tiān hěn máng", vi: "Hôm nay tôi bận" },
+  { en: "Please send me the file.", zh: "请把文件发给我", pinyin: "qǐng bǎ wén jiàn fā gěi wǒ", vi: "Hãy gửi file cho tôi" },// ===== BATCH 2 =====
+{ en: "I will call you later.", zh: "我稍后打给你", pinyin: "wǒ shāo hòu dǎ gěi nǐ", vi: "Tôi gọi bạn sau" },
+{ en: "Please wait for me.", zh: "请等我", pinyin: "qǐng děng wǒ", vi: "Hãy đợi tôi" },
+{ en: "I need more time.", zh: "我需要更多时间", pinyin: "wǒ xū yào gèng duō shí jiān", vi: "Tôi cần thêm thời gian" },
+{ en: "I will check it.", zh: "我会检查", pinyin: "wǒ huì jiǎn chá", vi: "Tôi sẽ kiểm tra" },
+{ en: "Let's discuss this.", zh: "我们讨论一下", pinyin: "wǒ men tǎo lùn yí xià", vi: "Bàn chút đi" },
+
+{ en: "I am not sure.", zh: "我不确定", pinyin: "wǒ bù què dìng", vi: "Tôi không chắc" },
+{ en: "That makes sense.", zh: "这有道理", pinyin: "zhè yǒu dào lǐ", vi: "Hợp lý" },
+{ en: "I will try my best.", zh: "我会尽力", pinyin: "wǒ huì jìn lì", vi: "Tôi sẽ cố hết sức" },
+{ en: "Please confirm this.", zh: "请确认", pinyin: "qǐng què rèn", vi: "Xác nhận giúp" },
+{ en: "Send me the details.", zh: "发给我细节", pinyin: "fā gěi wǒ xì jié", vi: "Gửi chi tiết" },
+
+{ en: "I will update you.", zh: "我会更新你", pinyin: "wǒ huì gēng xīn nǐ", vi: "Tôi sẽ cập nhật" },
+{ en: "Let's fix this problem.", zh: "我们解决这个问题", pinyin: "wǒ men jiě jué zhè gè wèn tí", vi: "Giải quyết vấn đề" },
+{ en: "This is important.", zh: "这很重要", pinyin: "zhè hěn zhòng yào", vi: "Điều này quan trọng" },
+{ en: "We need to act fast.", zh: "我们需要快行动", pinyin: "wǒ men xū yào kuài xíng dòng", vi: "Cần làm nhanh" },
+{ en: "Don't worry about it.", zh: "别担心", pinyin: "bié dān xīn", vi: "Đừng lo" },// ===== BATCH 2 =====
+{ en: "I will call you later.", zh: "我稍后打给你", pinyin: "wǒ shāo hòu dǎ gěi nǐ", vi: "Tôi gọi bạn sau" },
+{ en: "Please wait for me.", zh: "请等我", pinyin: "qǐng děng wǒ", vi: "Hãy đợi tôi" },
+{ en: "I need more time.", zh: "我需要更多时间", pinyin: "wǒ xū yào gèng duō shí jiān", vi: "Tôi cần thêm thời gian" },
+{ en: "I will check it.", zh: "我会检查", pinyin: "wǒ huì jiǎn chá", vi: "Tôi sẽ kiểm tra" },
+{ en: "Let's discuss this.", zh: "我们讨论一下", pinyin: "wǒ men tǎo lùn yí xià", vi: "Bàn chút đi" },
+
+{ en: "I am not sure.", zh: "我不确定", pinyin: "wǒ bù què dìng", vi: "Tôi không chắc" },
+{ en: "That makes sense.", zh: "这有道理", pinyin: "zhè yǒu dào lǐ", vi: "Hợp lý" },
+{ en: "I will try my best.", zh: "我会尽力", pinyin: "wǒ huì jìn lì", vi: "Tôi sẽ cố hết sức" },
+{ en: "Please confirm this.", zh: "请确认", pinyin: "qǐng què rèn", vi: "Xác nhận giúp" },
+{ en: "Send me the details.", zh: "发给我细节", pinyin: "fā gěi wǒ xì jié", vi: "Gửi chi tiết" },
+
+{ en: "I will update you.", zh: "我会更新你", pinyin: "wǒ huì gēng xīn nǐ", vi: "Tôi sẽ cập nhật" },
+{ en: "Let's fix this problem.", zh: "我们解决这个问题", pinyin: "wǒ men jiě jué zhè gè wèn tí", vi: "Giải quyết vấn đề" },
+{ en: "This is important.", zh: "这很重要", pinyin: "zhè hěn zhòng yào", vi: "Điều này quan trọng" },
+{ en: "We need to act fast.", zh: "我们需要快行动", pinyin: "wǒ men xū yào kuài xíng dòng", vi: "Cần làm nhanh" },
+{ en: "Don't worry about it.", zh: "别担心", pinyin: "bié dān xīn", vi: "Đừng lo" },
+// ===== BUSINESS 1-50 =====
+{ en: "We need to increase sales.", zh: "我们需要提高销售", pinyin: "wǒ men xū yào tí gāo xiāo shòu", vi: "Cần tăng doanh số" },
+{ en: "Let's improve the quality.", zh: "我们提高质量", pinyin: "wǒ men tí gāo zhì liàng", vi: "Cải thiện chất lượng" },
+{ en: "Reduce the cost.", zh: "降低成本", pinyin: "jiàng dī chéng běn", vi: "Giảm chi phí" },
+{ en: "We need a better plan.", zh: "我们需要更好的计划", pinyin: "wǒ men xū yào gèng hǎo de jì huà", vi: "Cần kế hoạch tốt hơn" },
+{ en: "This product is selling well.", zh: "这个产品卖得很好", pinyin: "zhè gè chǎn pǐn mài de hěn hǎo", vi: "Sản phẩm bán tốt" },
+
+{ en: "Let's launch a new product.", zh: "我们推出新产品", pinyin: "wǒ men tuī chū xīn chǎn pǐn", vi: "Ra sản phẩm mới" },
+{ en: "We need more customers.", zh: "我们需要更多客户", pinyin: "wǒ men xū yào gèng duō kè hù", vi: "Cần thêm khách" },
+{ en: "Improve customer service.", zh: "提高客户服务", pinyin: "tí gāo kè hù fú wù", vi: "Cải thiện CSKH" },
+{ en: "The market is growing.", zh: "市场在增长", pinyin: "shì chǎng zài zēng zhǎng", vi: "Thị trường đang tăng" },
+{ en: "We need better marketing.", zh: "我们需要更好的营销", pinyin: "wǒ men xū yào gèng hǎo de yíng xiāo", vi: "Cần marketing tốt hơn" },
+
+{ en: "Focus on results.", zh: "专注结果", pinyin: "zhuān zhù jié guǒ", vi: "Tập trung kết quả" },
+{ en: "We must act quickly.", zh: "我们必须快速行动", pinyin: "wǒ men bì xū kuài sù xíng dòng", vi: "Phải làm nhanh" },
+{ en: "Time is limited.", zh: "时间有限", pinyin: "shí jiān yǒu xiàn", vi: "Thời gian có hạn" },
+{ en: "We need a solution.", zh: "我们需要解决方案", pinyin: "wǒ men xū yào jiě jué fāng àn", vi: "Cần giải pháp" },
+{ en: "Check the data.", zh: "检查数据", pinyin: "jiǎn chá shù jù", vi: "Kiểm tra dữ liệu" },
+
+{ en: "Let's analyze this.", zh: "我们分析一下", pinyin: "wǒ men fēn xī yí xià", vi: "Phân tích đi" },
+{ en: "This is a good opportunity.", zh: "这是一个好机会", pinyin: "zhè shì yí gè hǎo jī huì", vi: "Cơ hội tốt" },
+{ en: "We should invest more.", zh: "我们应该多投资", pinyin: "wǒ men yīng gāi duō tóu zī", vi: "Nên đầu tư thêm" },
+{ en: "Increase productivity.", zh: "提高效率", pinyin: "tí gāo xiào lǜ", vi: "Tăng năng suất" },
+{ en: "We need better results.", zh: "我们需要更好的结果", pinyin: "wǒ men xū yào gèng hǎo de jié guǒ", vi: "Cần kết quả tốt hơn" },
+
+{ en: "Let's fix this issue.", zh: "我们解决这个问题", pinyin: "wǒ men jiě jué zhè gè wèn tí", vi: "Fix vấn đề này" },
+{ en: "We need a clear strategy.", zh: "我们需要清晰战略", pinyin: "wǒ men xū yào qīng xī zhàn lüè", vi: "Cần chiến lược rõ" },
+{ en: "The goal is profit.", zh: "目标是利润", pinyin: "mù biāo shì lì rùn", vi: "Mục tiêu là lợi nhuận" },
+{ en: "We must reduce risk.", zh: "我们必须降低风险", pinyin: "wǒ men bì xū jiàng dī fēng xiǎn", vi: "Giảm rủi ro" },
+{ en: "Focus on quality.", zh: "专注质量", pinyin: "zhuān zhù zhì liàng", vi: "Tập trung chất lượng" },
+
+{ en: "We need feedback.", zh: "我们需要反馈", pinyin: "wǒ men xū yào fǎn kuì", vi: "Cần feedback" },
+{ en: "Update the report.", zh: "更新报告", pinyin: "gēng xīn bào gào", vi: "Cập nhật báo cáo" },
+{ en: "Send the file.", zh: "发送文件", pinyin: "fā sòng wén jiàn", vi: "Gửi file" },
+{ en: "Check the numbers.", zh: "检查数字", pinyin: "jiǎn chá shù zì", vi: "Kiểm tra số liệu" },
+{ en: "We need a meeting.", zh: "我们需要会议", pinyin: "wǒ men xū yào huì yì", vi: "Cần họp" },
+
+{ en: "Let's discuss this.", zh: "我们讨论一下", pinyin: "wǒ men tǎo lùn yí xià", vi: "Bàn đi" },
+{ en: "We need approval.", zh: "我们需要批准", pinyin: "wǒ men xū yào pī zhǔn", vi: "Cần phê duyệt" },
+{ en: "This is urgent.", zh: "这很紧急", pinyin: "zhè hěn jǐn jí", vi: "Gấp" },
+{ en: "We must finish today.", zh: "我们今天必须完成", pinyin: "wǒ men jīn tiān bì xū wán chéng", vi: "Phải xong hôm nay" },
+{ en: "Let's move forward.", zh: "我们继续前进", pinyin: "wǒ men jì xù qián jìn", vi: "Tiếp tục" },
+
+{ en: "We need improvement.", zh: "我们需要改进", pinyin: "wǒ men xū yào gǎi jìn", vi: "Cần cải thiện" },
+{ en: "This is not enough.", zh: "这还不够", pinyin: "zhè hái bù gòu", vi: "Chưa đủ" },
+{ en: "We need more effort.", zh: "我们需要更多努力", pinyin: "wǒ men xū yào gèng duō nǔ lì", vi: "Cần cố hơn" },
+{ en: "The result is good.", zh: "结果很好", pinyin: "jié guǒ hěn hǎo", vi: "Kết quả tốt" },
+{ en: "We can do better.", zh: "我们可以更好", pinyin: "wǒ men kě yǐ gèng hǎo", vi: "Có thể tốt hơn" },
+// ===== LIFE 1-50 =====
+{ en: "I am hungry.", zh: "我饿了", pinyin: "wǒ è le", vi: "Tôi đói" },
+{ en: "I am tired.", zh: "我累了", pinyin: "wǒ lèi le", vi: "Tôi mệt" },
+{ en: "Let's go.", zh: "我们走吧", pinyin: "wǒ men zǒu ba", vi: "Đi thôi" },
+{ en: "Come here.", zh: "过来", pinyin: "guò lái", vi: "Lại đây" },
+{ en: "Sit down.", zh: "坐下", pinyin: "zuò xià", vi: "Ngồi xuống" },
+
+{ en: "Stand up.", zh: "站起来", pinyin: "zhàn qǐ lái", vi: "Đứng lên" },
+{ en: "Open the door.", zh: "打开门", pinyin: "dǎ kāi mén", vi: "Mở cửa" },
+{ en: "Close the window.", zh: "关窗", pinyin: "guān chuāng", vi: "Đóng cửa sổ" },
+{ en: "Turn on the light.", zh: "开灯", pinyin: "kāi dēng", vi: "Bật đèn" },
+{ en: "Turn off the light.", zh: "关灯", pinyin: "guān dēng", vi: "Tắt đèn" },
+
+{ en: "I am ready.", zh: "我准备好了", pinyin: "wǒ zhǔn bèi hǎo le", vi: "Tôi sẵn sàng" },
+{ en: "Wait for me.", zh: "等我", pinyin: "děng wǒ", vi: "Đợi tôi" },
+{ en: "Hurry up.", zh: "快点", pinyin: "kuài diǎn", vi: "Nhanh lên" },
+{ en: "Be careful.", zh: "小心", pinyin: "xiǎo xīn", vi: "Cẩn thận" },
+{ en: "Take care.", zh: "保重", pinyin: "bǎo zhòng", vi: "Giữ gìn" },
+
+{ en: "I am busy.", zh: "我很忙", pinyin: "wǒ hěn máng", vi: "Tôi bận" },
+{ en: "I am free.", zh: "我有空", pinyin: "wǒ yǒu kòng", vi: "Tôi rảnh" },
+{ en: "Call me.", zh: "打给我", pinyin: "dǎ gěi wǒ", vi: "Gọi tôi" },
+{ en: "Text me.", zh: "发信息给我", pinyin: "fā xìn xī gěi wǒ", vi: "Nhắn tôi" },
+{ en: "See you later.", zh: "待会见", pinyin: "dài huì jiàn", vi: "Gặp sau" },// ===== BUSINESS 51-100 =====
+{ en: "We need to optimize the process.", zh: "我们需要优化流程", pinyin: "wǒ men xū yào yōu huà liú chéng", vi: "Cần tối ưu quy trình" },
+{ en: "Let's improve efficiency.", zh: "我们提高效率", pinyin: "wǒ men tí gāo xiào lǜ", vi: "Tăng hiệu suất" },
+{ en: "We must control costs.", zh: "我们必须控制成本", pinyin: "wǒ men bì xū kòng zhì chéng běn", vi: "Phải kiểm soát chi phí" },
+{ en: "This strategy works.", zh: "这个策略有效", pinyin: "zhè gè cè lüè yǒu xiào", vi: "Chiến lược hiệu quả" },
+{ en: "We need more data.", zh: "我们需要更多数据", pinyin: "wǒ men xū yào gèng duō shù jù", vi: "Cần thêm dữ liệu" },
+
+{ en: "Check the progress.", zh: "检查进度", pinyin: "jiǎn chá jìn dù", vi: "Kiểm tra tiến độ" },
+{ en: "We need to adjust the plan.", zh: "我们需要调整计划", pinyin: "wǒ men xū yào tiáo zhěng jì huà", vi: "Điều chỉnh kế hoạch" },
+{ en: "This is not working.", zh: "这行不通", pinyin: "zhè xíng bù tōng", vi: "Cái này không ổn" },
+{ en: "We should change approach.", zh: "我们应该改变方法", pinyin: "wǒ men yīng gāi gǎi biàn fāng fǎ", vi: "Nên đổi cách" },
+{ en: "We need faster results.", zh: "我们需要更快的结果", pinyin: "wǒ men xū yào gèng kuài de jié guǒ", vi: "Cần kết quả nhanh hơn" },
+
+{ en: "Focus on the main goal.", zh: "专注主要目标", pinyin: "zhuān zhù zhǔ yào mù biāo", vi: "Tập trung mục tiêu chính" },
+{ en: "We need a clear plan.", zh: "我们需要明确计划", pinyin: "wǒ men xū yào míng què jì huà", vi: "Cần kế hoạch rõ" },
+{ en: "Time is money.", zh: "时间就是金钱", pinyin: "shí jiān jiù shì jīn qián", vi: "Thời gian là tiền" },
+{ en: "We need more resources.", zh: "我们需要更多资源", pinyin: "wǒ men xū yào gèng duō zī yuán", vi: "Cần thêm nguồn lực" },
+{ en: "Let's improve performance.", zh: "我们提高表现", pinyin: "wǒ men tí gāo biǎo xiàn", vi: "Tăng hiệu suất" },
+
+{ en: "We need a better system.", zh: "我们需要更好的系统", pinyin: "wǒ men xū yào gèng hǎo de xì tǒng", vi: "Cần hệ thống tốt hơn" },
+{ en: "Let's simplify the process.", zh: "我们简化流程", pinyin: "wǒ men jiǎn huà liú chéng", vi: "Đơn giản hóa quy trình" },
+{ en: "This is too complex.", zh: "这太复杂了", pinyin: "zhè tài fù zá le", vi: "Quá phức tạp" },
+{ en: "We need a clear direction.", zh: "我们需要明确方向", pinyin: "wǒ men xū yào míng què fāng xiàng", vi: "Cần hướng rõ" },
+{ en: "Let's move quickly.", zh: "我们快行动", pinyin: "wǒ men kuài xíng dòng", vi: "Làm nhanh" },
+
+{ en: "We need strong execution.", zh: "我们需要强执行", pinyin: "wǒ men xū yào qiáng zhí xíng", vi: "Cần thực thi mạnh" },
+{ en: "Check the quality.", zh: "检查质量", pinyin: "jiǎn chá zhì liàng", vi: "Kiểm tra chất lượng" },
+{ en: "We must improve quality.", zh: "我们必须提高质量", pinyin: "wǒ men bì xū tí gāo zhì liàng", vi: "Phải nâng chất lượng" },
+{ en: "Let's reduce errors.", zh: "我们减少错误", pinyin: "wǒ men jiǎn shǎo cuò wù", vi: "Giảm lỗi" },
+{ en: "We need consistency.", zh: "我们需要一致性", pinyin: "wǒ men xū yào yí zhì xìng", vi: "Cần ổn định" },
+
+{ en: "We must stay focused.", zh: "我们必须专注", pinyin: "wǒ men bì xū zhuān zhù", vi: "Phải tập trung" },
+{ en: "Let's solve this problem.", zh: "我们解决问题", pinyin: "wǒ men jiě jué wèn tí", vi: "Giải quyết vấn đề" },
+{ en: "We need a quick solution.", zh: "我们需要快速方案", pinyin: "wǒ men xū yào kuài sù fāng àn", vi: "Cần giải pháp nhanh" },
+{ en: "This is a big challenge.", zh: "这是一个大挑战", pinyin: "zhè shì yí gè dà tiǎo zhàn", vi: "Thách thức lớn" },
+{ en: "We will handle it.", zh: "我们会处理", pinyin: "wǒ men huì chǔ lǐ", vi: "Chúng tôi xử lý được" },// ===== LIFE 51-100 =====
+{ en: "I feel good today.", zh: "我今天感觉很好", pinyin: "wǒ jīn tiān gǎn jué hěn hǎo", vi: "Hôm nay thấy tốt" },
+{ en: "I feel bad.", zh: "我感觉不好", pinyin: "wǒ gǎn jué bù hǎo", vi: "Tôi thấy không ổn" },
+{ en: "I am sleepy.", zh: "我困了", pinyin: "wǒ kùn le", vi: "Tôi buồn ngủ" },
+{ en: "I need rest.", zh: "我需要休息", pinyin: "wǒ xū yào xiū xí", vi: "Tôi cần nghỉ" },
+{ en: "Let's go home.", zh: "我们回家", pinyin: "wǒ men huí jiā", vi: "Về nhà" },
+
+{ en: "Where are you?", zh: "你在哪里？", pinyin: "nǐ zài nǎ lǐ", vi: "Bạn ở đâu?" },
+{ en: "I am here.", zh: "我在这里", pinyin: "wǒ zài zhè lǐ", vi: "Tôi ở đây" },
+{ en: "Come with me.", zh: "跟我来", pinyin: "gēn wǒ lái", vi: "Đi theo tôi" },
+{ en: "Don't go.", zh: "别走", pinyin: "bié zǒu", vi: "Đừng đi" },
+{ en: "Stay here.", zh: "待在这里", pinyin: "dài zài zhè lǐ", vi: "Ở đây" },
+
+{ en: "I am coming.", zh: "我来了", pinyin: "wǒ lái le", vi: "Tôi tới đây" },
+{ en: "I am leaving.", zh: "我要走了", pinyin: "wǒ yào zǒu le", vi: "Tôi đi đây" },
+{ en: "Wait a second.", zh: "等一下", pinyin: "děng yí xià", vi: "Chờ chút" },
+{ en: "No hurry.", zh: "不着急", pinyin: "bù zháo jí", vi: "Không vội" },
+{ en: "Take your time.", zh: "慢慢来", pinyin: "màn màn lái", vi: "Từ từ" },
+
+{ en: "I like this.", zh: "我喜欢这个", pinyin: "wǒ xǐ huān zhè ge", vi: "Tôi thích cái này" },
+{ en: "I don't like that.", zh: "我不喜欢那个", pinyin: "wǒ bù xǐ huān nà ge", vi: "Tôi không thích cái kia" },
+{ en: "It's okay.", zh: "还可以", pinyin: "hái kě yǐ", vi: "Cũng được" },
+{ en: "It's great.", zh: "很好", pinyin: "hěn hǎo", vi: "Rất tốt" },
+{ en: "It's terrible.", zh: "很糟糕", pinyin: "hěn zāo gāo", vi: "Rất tệ" },
+
+{ en: "What are you doing?", zh: "你在做什么？", pinyin: "nǐ zài zuò shén me", vi: "Bạn đang làm gì?" },
+{ en: "I am working.", zh: "我在工作", pinyin: "wǒ zài gōng zuò", vi: "Tôi đang làm việc" },
+{ en: "I am eating.", zh: "我在吃饭", pinyin: "wǒ zài chī fàn", vi: "Tôi đang ăn" },
+{ en: "I am sleeping.", zh: "我在睡觉", pinyin: "wǒ zài shuì jiào", vi: "Tôi đang ngủ" },
+{ en: "I am learning.", zh: "我在学习", pinyin: "wǒ zài xué xí", vi: "Tôi đang học" },// ===== LONG DIALOGUES 4-13 =====
+{
+  topic: "Đi siêu thị",
+  level: "basic",
+  lines: [
+    { en: "Do you need anything?", zh: "你需要什么？", vi: "Bạn cần gì?" },
+    { en: "Yes, I need food.", zh: "是的，我需要食物", vi: "Tôi cần đồ ăn" },
+    { en: "Let's go shopping.", zh: "我们去购物", vi: "Đi mua đồ" },
+    { en: "This is cheap.", zh: "这个很便宜", vi: "Cái này rẻ" },
+    { en: "This is expensive.", zh: "这个很贵", vi: "Cái này đắt" },
+    { en: "Take this one.", zh: "拿这个", vi: "Lấy cái này" },
+    { en: "Okay.", zh: "好的", vi: "Ok" },
+    { en: "Let's pay.", zh: "我们付款", vi: "Thanh toán" },
+    { en: "Cash or card?", zh: "现金还是卡？", vi: "Tiền mặt hay thẻ?" },
+    { en: "Card.", zh: "卡", vi: "Thẻ" }
+  ]
+},
+
+{
+  topic: "Gọi điện",
+  level: "basic",
+  lines: [
+    { en: "Hello.", zh: "喂", vi: "Alo" },
+    { en: "Hi, it's me.", zh: "你好，是我", vi: "Là tôi đây" },
+    { en: "Are you free?", zh: "你有空吗？", vi: "Bạn rảnh không?" },
+    { en: "Yes, I am free.", zh: "我有空", vi: "Tôi rảnh" },
+    { en: "Let's meet.", zh: "我们见面", vi: "Gặp nhau đi" },
+    { en: "Where?", zh: "哪里？", vi: "Ở đâu?" },
+    { en: "At the cafe.", zh: "在咖啡店", vi: "Quán cafe" },
+    { en: "Okay, see you.", zh: "好的，再见", vi: "Ok gặp sau" },
+    { en: "Bye.", zh: "再见", vi: "Bye" },
+    { en: "See you soon.", zh: "待会见", vi: "Gặp sớm" }
+  ]
+}
+];
