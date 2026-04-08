@@ -1,5 +1,6 @@
 export const topicCatalog = [
   "Giao thông",
+"Số học",
   "Nhà hàng",
   "Trường học",
   "Siêu thị",
@@ -68,6 +69,75 @@ export const topicData = [
 { en: "turn right", zh: "右转", vi: "rẽ phải", pinyin: "yòu zhuǎn" }
     ]
   },
+{
+  id: "numbers_math",
+  name: "Số học",
+  icon: "🔢",
+  words: [
+    { en: "zero", zh: "零", pinyin: "líng", vi: "số không" },
+    { en: "one", zh: "一", pinyin: "yī", vi: "một" },
+    { en: "two", zh: "二", pinyin: "èr", vi: "hai" },
+    { en: "three", zh: "三", pinyin: "sān", vi: "ba" },
+    { en: "four", zh: "四", pinyin: "sì", vi: "bốn" },
+    { en: "five", zh: "五", pinyin: "wǔ", vi: "năm" },
+    { en: "six", zh: "六", pinyin: "liù", vi: "sáu" },
+    { en: "seven", zh: "七", pinyin: "qī", vi: "bảy" },
+    { en: "eight", zh: "八", pinyin: "bā", vi: "tám" },
+    { en: "nine", zh: "九", pinyin: "jiǔ", vi: "chín" },
+    { en: "ten", zh: "十", pinyin: "shí", vi: "mười" },
+
+    { en: "eleven", zh: "十一", pinyin: "shí yī", vi: "mười một" },
+    { en: "twelve", zh: "十二", pinyin: "shí èr", vi: "mười hai" },
+    { en: "thirteen", zh: "十三", pinyin: "shí sān", vi: "mười ba" },
+    { en: "twenty", zh: "二十", pinyin: "èr shí", vi: "hai mươi" },
+    { en: "thirty", zh: "三十", pinyin: "sān shí", vi: "ba mươi" },
+    { en: "forty", zh: "四十", pinyin: "sì shí", vi: "bốn mươi" },
+    { en: "fifty", zh: "五十", pinyin: "wǔ shí", vi: "năm mươi" },
+    { en: "sixty", zh: "六十", pinyin: "liù shí", vi: "sáu mươi" },
+    { en: "seventy", zh: "七十", pinyin: "qī shí", vi: "bảy mươi" },
+    { en: "eighty", zh: "八十", pinyin: "bā shí", vi: "tám mươi" },
+    { en: "ninety", zh: "九十", pinyin: "jiǔ shí", vi: "chín mươi" },
+
+    { en: "one hundred", zh: "一百", pinyin: "yì bǎi", vi: "một trăm" },
+    { en: "one thousand", zh: "一千", pinyin: "yì qiān", vi: "một nghìn" },
+    { en: "ten thousand", zh: "一万", pinyin: "yí wàn", vi: "mười nghìn" },
+    { en: "million", zh: "百万", pinyin: "bǎi wàn", vi: "triệu" },
+
+    { en: "first", zh: "第一", pinyin: "dì yī", vi: "thứ nhất" },
+    { en: "second", zh: "第二", pinyin: "dì èr", vi: "thứ hai" },
+    { en: "third", zh: "第三", pinyin: "dì sān", vi: "thứ ba" },
+
+    { en: "plus", zh: "加", pinyin: "jiā", vi: "cộng" },
+    { en: "minus", zh: "减", pinyin: "jiǎn", vi: "trừ" },
+    { en: "times", zh: "乘", pinyin: "chéng", vi: "nhân" },
+    { en: "multiply", zh: "乘以", pinyin: "chéng yǐ", vi: "nhân với" },
+    { en: "divided by", zh: "除以", pinyin: "chú yǐ", vi: "chia cho" },
+    { en: "equals", zh: "等于", pinyin: "děng yú", vi: "bằng" },
+
+    { en: "greater than", zh: "大于", pinyin: "dà yú", vi: "lớn hơn" },
+    { en: "less than", zh: "小于", pinyin: "xiǎo yú", vi: "nhỏ hơn" },
+    { en: "equal to", zh: "等于", pinyin: "děng yú", vi: "bằng với" },
+
+    { en: "number", zh: "数字", pinyin: "shù zì", vi: "con số" },
+    { en: "count", zh: "数", pinyin: "shǔ", vi: "đếm" },
+    { en: "total", zh: "总数", pinyin: "zǒng shù", vi: "tổng" },
+    { en: "sum", zh: "总和", pinyin: "zǒng hé", vi: "tổng cộng" },
+    { en: "difference", zh: "差", pinyin: "chā", vi: "hiệu" },
+    { en: "product", zh: "积", pinyin: "jī", vi: "tích" },
+    { en: "quotient", zh: "商", pinyin: "shāng", vi: "thương" },
+
+    { en: "half", zh: "一半", pinyin: "yí bàn", vi: "một nửa" },
+    { en: "double", zh: "双倍", pinyin: "shuāng bèi", vi: "gấp đôi" },
+    { en: "triple", zh: "三倍", pinyin: "sān bèi", vi: "gấp ba" },
+
+    { en: "percent", zh: "百分比", pinyin: "bǎi fēn bǐ", vi: "phần trăm" },
+    { en: "fraction", zh: "分数", pinyin: "fēn shù", vi: "phân số" },
+    { en: "decimal", zh: "小数", pinyin: "xiǎo shù", vi: "số thập phân" },
+
+    { en: "odd number", zh: "奇数", pinyin: "jī shù", vi: "số lẻ" },
+    { en: "even number", zh: "偶数", pinyin: "ǒu shù", vi: "số chẵn" },
+  ]
+},
 {
   id: "travel",
   name: "Du lịch",

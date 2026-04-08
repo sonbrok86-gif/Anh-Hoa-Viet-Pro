@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { topicCatalog, topicData } from "./data/topics";
 import { irregularVerbs } from "./data/verbs";
 import { grammar_full } from "./data/grammar_full";
 import { grammar_advanced } from "./data/grammar_advanced";
+import { grammar_full_pro } from "./data/grammar_full_pro";
 import { styles } from "./styles/appStyles";
 import { antonyms_full_1 } from "./data/antonyms_full_1";
 import { antonyms_full_2 } from "./data/antonyms_full_2";
@@ -20,6 +21,7 @@ import { lifeLessons3 } from "./data/life_lesson_3";
 import { lifeLessons4 } from "./data/life_lesson_4";
 import { lifeLessons5 } from "./data/life_lesson_5";
 import { lifeLessons6 } from "./data/life_lesson_6";
+import { grammar_quiz_bank_1 } from "./data/grammar_quiz_bank_1";
 
 const allAntonyms = [
   ...antonyms_full_1,
@@ -42,6 +44,7 @@ const allAdjectives = [
 const allGrammar = [
   ...grammar_full,
   ...grammar_advanced,
+...grammar_full_pro,
 ];
 const allLifeLessons = [
   ...lifeLessons1,
@@ -74,6 +77,18 @@ function TabButton({ active, onClick, children }) {
 }
 
 export default function App() {
+const [showProModal, setShowProModal] = useState(false);
+const [topicPage, setTopicPage] = useState(1);
+const [verbsPage, setVerbsPage] = useState(1);
+const [adjectivesPage, setAdjectivesPage] = useState(1);
+const [isPro, setIsPro] = useState(() => {
+  const saved = localStorage.getItem("isPro");
+  return saved ? JSON.parse(saved) : false;
+});
+const [antonymsPage, setAntonymsPage] = useState(1);
+const [sentencesPage, setSentencesPage] = useState(1);
+const [dialoguesPage, setDialoguesPage] = useState(1);
+const [lifePage, setLifePage] = useState(1);
   const [mainTab, setMainTab] = useState("topics");
   const [topicIndex, setTopicIndex] = useState(0);
   const [topicSearch, setTopicSearch] = useState("");
@@ -81,6 +96,22 @@ export default function App() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [randomMode, setRandomMode] = useState(false);
   const [randomWord, setRandomWord] = useState(null);
+const [openWordIndex, setOpenWordIndex] = useState(null);
+
+const [favoriteIds, setFavoriteIds] = useState(() => {
+  const saved = localStorage.getItem("favoriteIds");
+  return saved ? JSON.parse(saved) : [];
+});
+
+const [reviewItems, setReviewItems] = useState(() => {
+  const saved = localStorage.getItem("reviewItems");
+  return saved ? JSON.parse(saved) : [];
+});const [reviewMode, setReviewMode] = useState(false);
+const [reviewQueue, setReviewQueue] = useState([]);
+const [reviewIndex, setReviewIndex] = useState(0);
+const [reviewShowAnswer, setReviewShowAnswer] = useState(false);
+const [reviewKnown, setReviewKnown] = useState(0);
+const [reviewUnknown, setReviewUnknown] = useState(0);
 
   const [quizWord, setQuizWord] = useState(null);
   const [quizMode, setQuizMode] = useState("en-vi");
@@ -97,6 +128,20 @@ export default function App() {
   });
   const [grammarQuizAnswered, setGrammarQuizAnswered] = useState(false);
   const [grammarQuizMessage, setGrammarQuizMessage] = useState("");
+const [grammarLevel, setGrammarLevel] = useState("all");
+const [grammarCategory, setGrammarCategory] = useState("all");
+const [grammarMode, setGrammarMode] = useState("practice"); // practice | exam
+const [grammarExamSize, setGrammarExamSize] = useState(10);
+const [grammarExamQueue, setGrammarExamQueue] = useState([]);
+const [grammarExamIndex, setGrammarExamIndex] = useState(0);
+const [grammarExamCorrectCount, setGrammarExamCorrectCount] = useState(0);
+const [grammarExamWrongCount, setGrammarExamWrongCount] = useState(0);
+const [grammarWrongBank, setGrammarWrongBank] = useState(() => {
+  const saved = localStorage.getItem("grammarWrongBank");
+  return saved ? JSON.parse(saved) : [];
+});
+const [grammarQuizUsedIds, setGrammarQuizUsedIds] = useState([]);
+const [grammarView, setGrammarView] = useState("theory"); // theory | quiz
 
   const [listeningWord, setListeningWord] = useState(null);
   const [listeningOptions, setListeningOptions] = useState([]);
@@ -169,6 +214,26 @@ export default function App() {
       ].some((value) => String(value || "").toLowerCase().includes(q))
     );
   }, [lexiconSearch]);
+const grammarQuizSource = grammar_quiz_bank_1 || [];
+
+const grammarCategories = Array.from(
+  new Set(grammarQuizSource.map((item) => item.category).filter(Boolean))
+);
+
+const filteredGrammarQuizItems = useMemo(() => {
+  return grammarQuizSource.filter((item) => {
+    const levelOk = grammarLevel === "all" ? true : item.level === grammarLevel;
+    const categoryOk = grammarCategory === "all" ? true : item.category === grammarCategory;
+    return levelOk && categoryOk;
+  });
+}, [grammarQuizSource, grammarLevel, grammarCategory]);
+const filteredGrammarTheory = useMemo(() => {
+  return allGrammar.filter((item) => {
+    const levelOk = grammarLevel === "all" ? true : item.level === grammarLevel;
+    const categoryOk = grammarCategory === "all" ? true : item.category === grammarCategory;
+    return levelOk && categoryOk;
+  });
+}, [grammarLevel, grammarCategory]);
 
   const filteredSentences = useMemo(() => {
     const q = lexiconSearch.trim().toLowerCase();
@@ -191,6 +256,34 @@ export default function App() {
       )
     );
   }, [lexiconSearch]);
+  useEffect(() => {
+    setTopicPage(1);
+  }, [topicIndex, topicSearch]);
+
+  useEffect(() => {
+    setVerbsPage(1);
+    setAdjectivesPage(1);
+    setAntonymsPage(1);
+    setSentencesPage(1);
+    setDialoguesPage(1);
+  }, [lexiconSearch]);
+
+  useEffect(() => {
+    setLifePage(1);
+  }, [mainTab]);
+useEffect(() => {
+  localStorage.setItem("favoriteIds", JSON.stringify(favoriteIds));
+}, [favoriteIds]);
+useEffect(() => {
+  localStorage.setItem("grammarWrongBank", JSON.stringify(grammarWrongBank));
+}, [grammarWrongBank]);
+
+useEffect(() => {
+  localStorage.setItem("reviewItems", JSON.stringify(reviewItems));
+}, [reviewItems]);
+useEffect(() => {
+  localStorage.setItem("isPro", JSON.stringify(isPro));
+}, [isPro]);
 
   function pickRandomWord() {
     if (!selectedTopic.words.length) return;
@@ -238,48 +331,109 @@ export default function App() {
     setQuizResult("");
   }
 
-  function generateGrammarQuiz() {
-    if (!allGrammar || allGrammar.length < 4) return;
+  function generateGrammarQuiz(fromList = null) {
+  const source = fromList || filteredGrammarQuizItems;
 
-    const randomItem =
-      allGrammar[Math.floor(Math.random() * allGrammar.length)];
+  if (!source || source.length < 1) return;
 
-    const correct = randomItem.formula;
+  let available = source.filter((item) => !grammarQuizUsedIds.includes(item.id));
 
-    const wrong = allGrammar
-      .filter((g) => g.formula !== correct)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3)
-      .map((g) => g.formula);
-
-    const options = [...wrong, correct].sort(() => Math.random() - 0.5);
-
-    setGrammarQuizItem(randomItem);
-    setGrammarQuizOptions(options);
-    setGrammarQuizAnswer(correct);
-    setGrammarQuizCorrect(null);
-    setGrammarQuizAnswered(false);
-    setGrammarQuizMessage("");
+  if (available.length === 0) {
+    setGrammarQuizUsedIds([]);
+    available = source;
   }
 
+  const randomItem = available[Math.floor(Math.random() * available.length)];
+
+  setGrammarQuizItem(randomItem);
+  setGrammarQuizOptions(
+    [...randomItem.options].sort(() => Math.random() - 0.5)
+  );
+  setGrammarQuizAnswer(randomItem.correct);
+  setGrammarQuizCorrect(null);
+  setGrammarQuizAnswered(false);
+  setGrammarQuizMessage("");
+  setGrammarQuizUsedIds((prev) => [...prev, randomItem.id]);
+}
   function handleGrammarQuizAnswer(option) {
-    if (grammarQuizAnswered) return;
+  if (grammarQuizAnswered || !grammarQuizItem) return;
 
-    const isCorrect = option === grammarQuizAnswer;
+  const isCorrect = option === grammarQuizAnswer;
 
-    setGrammarQuizCorrect(isCorrect);
-    setGrammarQuizAnswered(true);
+  setGrammarQuizCorrect(isCorrect);
+  setGrammarQuizAnswered(true);
 
-    if (isCorrect) {
-      const newScore = grammarQuizScore + 1;
-      setGrammarQuizScore(newScore);
-      localStorage.setItem("grammarQuizScore", String(newScore));
-      setGrammarQuizMessage("✅ Đúng rồi");
-    } else {
-      setGrammarQuizMessage(`❌ Sai. Đáp án đúng là: ${grammarQuizAnswer}`);
+  if (isCorrect) {
+    const newScore = grammarQuizScore + 1;
+    setGrammarQuizScore(newScore);
+    localStorage.setItem("grammarQuizScore", String(newScore));
+    setGrammarQuizMessage("✅ Đúng rồi");
+
+    if (grammarMode === "exam") {
+      setGrammarExamCorrectCount((v) => v + 1);
+    }
+  } else {
+    setGrammarQuizMessage(`❌ Sai. Đáp án đúng là: ${grammarQuizAnswer}`);
+
+    setGrammarWrongBank((prev) => {
+      if (prev.some((x) => x.id === grammarQuizItem.id)) return prev;
+      return [...prev, grammarQuizItem];
+    });
+
+    if (grammarMode === "exam") {
+      setGrammarExamWrongCount((v) => v + 1);
     }
   }
+}
+function startGrammarExam(size = 10) {
+  if (!filteredGrammarQuizItems.length) return;
 
+  const shuffled = [...filteredGrammarQuizItems].sort(() => Math.random() - 0.5);
+  const examItems = shuffled.slice(0, size);
+
+  setGrammarMode("exam");
+  setGrammarExamSize(size);
+  setGrammarExamQueue(examItems);
+  setGrammarExamIndex(0);
+  setGrammarExamCorrectCount(0);
+  setGrammarExamWrongCount(0);
+  setGrammarQuizUsedIds([]);
+
+  if (examItems.length > 0) {
+    generateGrammarQuiz(examItems);
+  }
+}
+
+function nextGrammarExamQuestion() {
+  const nextIndex = grammarExamIndex + 1;
+
+  if (nextIndex >= grammarExamQueue.length) {
+    setGrammarQuizMessage(
+      `🏁 Hoàn thành bài thi. Đúng: ${grammarExamCorrectCount} | Sai: ${grammarExamWrongCount}`
+    );
+    return;
+  }
+
+  setGrammarExamIndex(nextIndex);
+  const nextItem = grammarExamQueue[nextIndex];
+
+  setGrammarQuizItem(nextItem);
+  setGrammarQuizOptions([...nextItem.options].sort(() => Math.random() - 0.5));
+  setGrammarQuizAnswer(nextItem.correct);
+  setGrammarQuizCorrect(null);
+  setGrammarQuizAnswered(false);
+  setGrammarQuizMessage("");
+}
+
+function resetGrammarExam() {
+  setGrammarMode("practice");
+  setGrammarExamQueue([]);
+  setGrammarExamIndex(0);
+  setGrammarExamCorrectCount(0);
+  setGrammarExamWrongCount(0);
+  setGrammarQuizUsedIds([]);
+  generateGrammarQuiz();
+}
   function speakText(text, lang = "en-US") {
     if (!window.speechSynthesis || !text) return;
 
@@ -291,7 +445,34 @@ export default function App() {
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
   }
+function speakSequence(texts = [], lang = "en-US") {
+  if (!window.speechSynthesis) return;
 
+  const cleaned = texts.filter(Boolean);
+  if (!cleaned.length) return;
+
+  window.speechSynthesis.cancel();
+
+  let index = 0;
+
+  function speakNext() {
+    if (index >= cleaned.length) return;
+
+    const utterance = new SpeechSynthesisUtterance(cleaned[index]);
+    utterance.lang = lang;
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+
+    utterance.onend = () => {
+      index++;
+      speakNext();
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  speakNext();
+}
   function generateListeningQuiz(mode = listeningMode) {
     const words = selectedTopic.words;
     if (words.length < 4) return;
@@ -334,12 +515,169 @@ export default function App() {
     setTopicProgress(newProgress);
     localStorage.setItem("topicProgress", JSON.stringify(newProgress));
   }
+function toggleFavorite(id) {
+  setFavoriteIds((prev) =>
+    prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+  );
+}
 
+function addToReview(item) {
+  const reviewId = item.id || `${item.en || ""}-${item.zh || ""}-${item.vi || ""}`;
+
+  setReviewItems((prev) => {
+    if (prev.some((x) => x._reviewId === reviewId)) return prev;
+    return [...prev, { ...item, _reviewId: reviewId }];
+  });
+}
+
+function startReviewSession(shuffle = true) {
+  if (!reviewItems.length) return;
+
+  const items = shuffle
+    ? [...reviewItems].sort(() => Math.random() - 0.5)
+    : [...reviewItems];
+
+  setReviewQueue(items);
+  setReviewIndex(0);
+  setReviewShowAnswer(false);
+  setReviewKnown(0);
+  setReviewUnknown(0);
+  setReviewMode(true);
+}
+
+function stopReviewSession() {
+  setReviewMode(false);
+  setReviewQueue([]);
+  setReviewIndex(0);
+  setReviewShowAnswer(false);
+}
+
+function handleReviewAnswer(isKnown) {
+  const current = reviewQueue[reviewIndex];
+  if (!current) return;
+
+  if (isKnown) {
+    setReviewKnown((v) => v + 1);
+  } else {
+    setReviewUnknown((v) => v + 1);
+    setReviewQueue((prev) => [...prev, current]);
+  }
+
+  if (reviewIndex >= reviewQueue.length - 1) {
+    setReviewShowAnswer(false);
+    return;
+  }
+
+  setReviewIndex((v) => v + 1);
+  setReviewShowAnswer(false);
+}
+function paginate(items, page = 1, pageSize = 8) {
+  const safeItems = Array.isArray(items) ? items : [];
+  const totalPages = Math.max(1, Math.ceil(safeItems.length / pageSize));
+  const currentPage = Math.min(Math.max(page, 1), totalPages);
+  const start = (currentPage - 1) * pageSize;
+  const pagedItems = safeItems.slice(start, start + pageSize);
+  return {
+    pagedItems,
+    totalPages,
+    currentPage,
+  };
+}
+const favoriteTopicWords = topicData.flatMap((topic) =>
+  topic.words
+    .filter((word) =>
+      favoriteIds.includes(word.id || `${topic.id}-${word.en}-${word.zh}-${word.vi}`)
+    )
+    .map((word) => ({
+      ...word,
+      _favId: word.id || `${topic.id}-${word.en}-${word.zh}-${word.vi}`,
+      _topicName: topic.name,
+    }))
+);
+function openProModal() {
+  setShowProModal(true);
+}
+
+function closeProModal() {
+  setShowProModal(false);
+};
+function Pager({ page, totalPages, onPrev, onNext }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 12,
+        marginTop: 18,
+        flexWrap: "wrap",
+      }}
+    >
+      <button
+        onClick={onPrev}
+        disabled={page <= 1}
+        style={{
+          ...styles.tabButton,
+          color: "#1e293b",
+          background: "#ffffff",
+          opacity: page <= 1 ? 0.5 : 1,
+        }}
+      >
+        ← Trước
+      </button>
+
+      <div style={{ fontWeight: 700, color: "#334155" }}>
+        Trang {page}/{totalPages}
+      </div>
+
+      <button
+        onClick={onNext}
+        disabled={page >= totalPages}
+        style={{
+          ...styles.tabButton,
+          color: "#1e293b",
+          background: "#ffffff",
+          opacity: page >= totalPages ? 0.5 : 1,
+        }}
+      >
+        Tiếp →
+      </button>
+    </div>
+  );
+}
+const topicPaged = paginate(filteredTopicWords, topicPage, 8);
+const currentReviewItem = reviewQueue[reviewIndex] || null;
+const reviewProgressTotal = reviewQueue.length || 1;
+const reviewProgressPercent = Math.min(
+  100,
+  Math.round(((reviewIndex + 1) / reviewProgressTotal) * 100)
+);
+const verbsPaged = paginate(filteredVerbs, verbsPage, 8);
+const adjectivesPaged = paginate(filteredAdjectives, adjectivesPage, 8);
+const antonymsPaged = paginate(filteredAntonyms, antonymsPage, 6);
+const sentencesPaged = paginate(filteredSentences, sentencesPage, 6);
+const dialoguesPaged = paginate(filteredDialogues, dialoguesPage, 1);
+const lifePaged = paginate(allLifeLessons, lifePage, 1);
   return (
     <div style={styles.page}>
       <div style={styles.container}>
         <div style={styles.hero}>
           <div>
+<div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 }}>
+  <button
+    onClick={() => setIsPro(true)}
+    style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+  >
+    Mở PRO
+  </button>
+
+  <button
+    onClick={() => setIsPro(false)}
+    style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+  >
+    Về FREE
+  </button>
+</div>
             <div style={styles.badge}>PRO BUILD</div>
             <h1 style={styles.title}>App học Anh - Hoa - Việt PRO</h1>
             <p style={styles.subtitle}>
@@ -373,51 +711,124 @@ export default function App() {
             Tính từ
           </TabButton>
 
-          <TabButton active={mainTab === "antonyms"} onClick={() => setMainTab("antonyms")}>
-            Trái nghĩa
-          </TabButton>
-
-          <TabButton
-            active={mainTab === "grammar"}
-            onClick={() => {
-              setMainTab("grammar");
-              generateGrammarQuiz();
-            }}
-          >
-            Ngữ pháp
-          </TabButton>
-
-          <TabButton
-            active={mainTab === "quiz"}
-            onClick={() => {
-              setMainTab("quiz");
-              generateQuiz();
-            }}
-          >
-            Quiz
-          </TabButton>
-
-          <TabButton
-            active={mainTab === "listening"}
-            onClick={() => {
-              setMainTab("listening");
-              generateListeningQuiz();
-            }}
-          >
-            Quiz nghe
-          </TabButton>
-
-          <TabButton active={mainTab === "sentences"} onClick={() => setMainTab("sentences")}>
-            Câu giao tiếp
-          </TabButton>
-
-          <TabButton active={mainTab === "dialogues"} onClick={() => setMainTab("dialogues")}>
-            Hội thoại
-          </TabButton>
-<TabButton active={mainTab === "life"} onClick={() => setMainTab("life")}>
-  Life Lessons
+         <TabButton
+  active={mainTab === "antonyms"}
+  onClick={() => {
+    if (!isPro) {
+      openProModal();
+      return;
+    }
+    setMainTab("antonyms");
+  }}
+>
+  Trái nghĩa {!isPro ? "🔒" : ""}
 </TabButton>
 
+         <TabButton
+  active={mainTab === "grammar"}
+  onClick={() => {
+    if (!isPro) {
+      openProModal();
+      return;
+    }
+    setMainTab("grammar");
+    generateGrammarQuiz();
+  }}
+>
+  Ngữ pháp {!isPro ? "🔒" : ""}
+</TabButton>
+
+        <TabButton
+  active={mainTab === "quiz"}
+  onClick={() => {
+    if (!isPro) {
+      openProModal();
+      return;
+    }
+    setMainTab("quiz");
+    generateQuiz();
+  }}
+>
+  Quiz {!isPro ? "🔒" : ""}
+</TabButton>
+
+         <TabButton
+  active={mainTab === "listening"}
+  onClick={() => {
+    if (!isPro) {
+      openProModal();
+      return;
+    }
+    setMainTab("listening");
+    generateListeningQuiz();
+  }}
+>
+  Quiz nghe {!isPro ? "🔒" : ""}
+</TabButton>
+
+          <TabButton
+  active={mainTab === "sentences"}
+  onClick={() => {
+    if (!isPro) {
+      openProModal();
+      return;
+    }
+    setMainTab("sentences");
+  }}
+>
+  Câu giao tiếp {!isPro ? "🔒" : ""}
+</TabButton>
+
+         <TabButton
+  active={mainTab === "dialogues"}
+  onClick={() => {
+    if (!isPro) {
+      openProModal();
+      return;
+    }
+    setMainTab("dialogues");
+  }}
+>
+  Hội thoại {!isPro ? "🔒" : ""}
+</TabButton>
+<TabButton
+  active={mainTab === "life"}
+  onClick={() => {
+    if (!isPro) {
+      openProModal();
+      return;
+    }
+    setMainTab("life");
+  }}
+>
+  Life Lessons {!isPro ? "🔒" : ""}
+</TabButton>
+
+<TabButton
+  active={mainTab === "favorites"}
+  onClick={() => {
+    if (!isPro) {
+      openProModal();
+      return;
+    }
+    setMainTab("favorites");
+  }}
+>
+  Yêu thích {!isPro ? "🔒" : ""}
+</TabButton>
+
+<TabButton
+  active={mainTab === "review"}
+  onClick={() => {
+    if (!isPro) {
+      openProModal();
+      return;
+    }
+    setMainTab("review");
+  }}
+>
+  Ôn tập {!isPro ? "🔒" : ""}
+</TabButton>
           <TabButton active={mainTab === "roadmap"} onClick={() => setMainTab("roadmap")}>
             Lộ trình PRO
           </TabButton>
@@ -436,7 +847,13 @@ export default function App() {
                 return (
                   <button
                     key={topic.id}
-                    onClick={() => setTopicIndex(index)}
+                   onClick={() => {
+  if (!isPro && index > 2) {
+    openProModal();
+    return;
+  }
+  setTopicIndex(index);
+}}
                     style={{
                       ...styles.sideBtn,
                       ...(index === topicIndex ? styles.sideBtnActive : {}),
@@ -452,9 +869,9 @@ export default function App() {
                         gap: 8,
                       }}
                     >
-                      <div>
-                        {topic.icon} {topic.name}
-                      </div>
+                     <div>
+  {topic.icon} {topic.name} {!isPro && index > 2 ? "🔒" : ""}
+</div>
                       <div style={{ fontSize: 12, opacity: 0.85 }}>{percent}%</div>
                     </div>
 
@@ -543,7 +960,7 @@ export default function App() {
                 </div>
               </div>
 
-              {randomMode ? (
+                             {randomMode ? (
                 randomWord && (
                   <div
                     style={{ ...styles.wordCard, cursor: "pointer" }}
@@ -596,54 +1013,108 @@ export default function App() {
                   </div>
                 )
               ) : (
+                <>
                 <div style={styles.gridCards}>
-                  {filteredTopicWords.map((word, idx) => (
-                    <div
-                      key={idx}
-                      style={{ ...styles.wordCard, cursor: "pointer" }}
-                      onClick={() => setShowAnswer(!showAnswer)}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-                        <div><b>EN:</b> {word.en}</div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            speakText(word.en, "en-US");
-                          }}
-                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                        >
-                          🔊 EN
-                        </button>
-                      </div>
+  {topicPaged.pagedItems.map((word, idx) => {
+    const cardId = `${selectedTopic.id}-${topicPaged.currentPage}-${idx}`;
+    const favId = word.id || `${selectedTopic.id}-${word.en}-${word.zh}-${word.vi}`;
+    const isOpen = openWordIndex === cardId;
+    const isFav = favoriteIds.includes(favId);
 
-                      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginTop: 8 }}>
-                        <div style={styles.zh}><b>ZH:</b> {word.zh}</div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            speakText(word.zh, "zh-CN");
-                          }}
-                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                        >
-                          🔊 ZH
-                        </button>
-                      </div>
+    return (
+      <div
+        key={idx}
+        style={{ ...styles.wordCard, cursor: "pointer" }}
+        onClick={() => setOpenWordIndex(isOpen ? null : cardId)}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 10,
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <div><b>EN:</b> {word.en}</div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                speakText(word.en, "en-US");
+              }}
+              style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+            >
+              🔊 EN
+            </button>
+          </div>
 
-                      {showAnswer && (
-                        <>
-                          <div><b>Pinyin:</b> {word.pinyin}</div>
-                          <div><b>VI:</b> {word.vi}</div>
-                        </>
-                      )}
-                    </div>
-                  ))}
-                </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFavorite(favId);
+            }}
+            style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+          >
+            {isFav ? "⭐" : "☆"}
+          </button>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginTop: 8 }}>
+          <div style={styles.zh}><b>ZH:</b> {word.zh}</div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              speakText(word.zh, "zh-CN");
+            }}
+            style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+          >
+            🔊 ZH
+          </button>
+        </div>
+
+        {isOpen && (
+          <>
+            <div><b>Pinyin:</b> {word.pinyin}</div>
+            <div><b>VI:</b> {word.vi}</div>
+
+            <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToReview({
+                    id: favId,
+                    type: "word",
+                    en: word.en,
+                    zh: word.zh,
+                    pinyin: word.pinyin,
+                    vi: word.vi,
+                  });
+                }}
+                style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+              >
+                Ôn tập
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  })}
+</div>
+                  <Pager
+                    page={topicPaged.currentPage}
+                    totalPages={topicPaged.totalPages}
+                    onPrev={() => setTopicPage((p) => Math.max(1, p - 1))}
+                    onNext={() => setTopicPage((p) => Math.min(topicPaged.totalPages, p + 1))}
+                  />
+                </>
               )}
             </div>
           </div>
         )}
 
-        {mainTab === "verbs" && (
+               {mainTab === "verbs" && (
           <div style={styles.mainPanel}>
             <div style={styles.headerRow}>
               <div>
@@ -688,23 +1159,47 @@ export default function App() {
             <div style={styles.sectionBlock}>
               <h3>Động từ thường dùng</h3>
               <div style={styles.gridCards}>
-                {filteredVerbs.map((item, idx) => (
-                  <div key={idx} style={styles.wordCard}>
-                    <div><b>EN:</b> {item.en}</div>
-                    <div><b>ZH:</b> {item.zh}</div>
-                    <div><b>Pinyin:</b> {item.pinyin}</div>
-                    <div><b>VI:</b> {item.vi}</div>
-                    <div style={{ marginTop: 8 }}>
-                      <b>Example:</b> {item.example}
-                    </div>
-                  </div>
-                ))}
+                {verbsPaged.pagedItems.map((item, idx) => (
+  <div key={idx} style={styles.wordCard}>
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+      <div><b>EN:</b> {item.en}</div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <button
+          onClick={() => speakText(item.en, "en-US")}
+          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+        >
+          🔊 EN
+        </button>
+        <button
+          onClick={() => speakText(item.zh, "zh-CN")}
+          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+        >
+          🔊 ZH
+        </button>
+      </div>
+    </div>
+
+    <div><b>ZH:</b> {item.zh}</div>
+    <div><b>Pinyin:</b> {item.pinyin}</div>
+    <div><b>VI:</b> {item.vi}</div>
+
+    <div style={{ marginTop: 8 }}>
+      <b>Example:</b> {item.example}
+    </div>
+  </div>
+))}
               </div>
+
+              <Pager
+                page={verbsPaged.currentPage}
+                totalPages={verbsPaged.totalPages}
+                onPrev={() => setVerbsPage((p) => Math.max(1, p - 1))}
+                onNext={() => setVerbsPage((p) => Math.min(verbsPaged.totalPages, p + 1))}
+              />
             </div>
           </div>
         )}
-
-        {mainTab === "adjectives" && (
+               {mainTab === "adjectives" && (
           <div style={styles.mainPanel}>
             <div style={styles.headerRow}>
               <div>
@@ -723,22 +1218,45 @@ export default function App() {
             </div>
 
             <div style={styles.gridCards}>
-              {filteredAdjectives.map((item, idx) => (
-                <div key={idx} style={styles.wordCard}>
-                  <div><b>EN:</b> {item.en}</div>
-                  <div><b>ZH:</b> {item.zh}</div>
-                  <div><b>Pinyin:</b> {item.pinyin}</div>
-                  <div><b>VI:</b> {item.vi}</div>
-                  <div style={{ marginTop: 8 }}>
-                    <b>Example:</b> {item.example}
-                  </div>
-                </div>
-              ))}
-            </div>
+             {adjectivesPaged.pagedItems.map((item, idx) => (
+  <div key={idx} style={styles.wordCard}>
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+      <div><b>EN:</b> {item.en}</div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <button
+          onClick={() => speakText(item.en, "en-US")}
+          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+        >
+          🔊 EN
+        </button>
+        <button
+          onClick={() => speakText(item.zh, "zh-CN")}
+          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+        >
+          🔊 ZH
+        </button>
+      </div>
+    </div>
+
+    <div><b>ZH:</b> {item.zh}</div>
+    <div><b>Pinyin:</b> {item.pinyin}</div>
+    <div><b>VI:</b> {item.vi}</div>
+
+    <div style={{ marginTop: 8 }}>
+      <b>Example:</b> {item.example}
+    </div>
+  </div>
+))}            </div>
+
+            <Pager
+              page={adjectivesPaged.currentPage}
+              totalPages={adjectivesPaged.totalPages}
+              onPrev={() => setAdjectivesPage((p) => Math.max(1, p - 1))}
+              onNext={() => setAdjectivesPage((p) => Math.min(adjectivesPaged.totalPages, p + 1))}
+            />
           </div>
         )}
-
-        {mainTab === "antonyms" && (
+               {mainTab === "antonyms" && (
           <div style={styles.mainPanel}>
             <div style={styles.headerRow}>
               <div>
@@ -755,177 +1273,393 @@ export default function App() {
             </div>
 
             <div style={styles.gridCards}>
-              {filteredAntonyms.map((item, idx) => (
-                <div key={idx} style={styles.wordCard}>
-                  <div style={{ fontSize: 18, fontWeight: 700 }}>
-                    {item.en1} ↔ {item.en2}
-                  </div>
+              {antonymsPaged.pagedItems.map((item, idx) => (
+  <div key={idx} style={styles.wordCard}>
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+      <div style={{ fontSize: 18, fontWeight: 700 }}>
+        {item.en1} ↔ {item.en2}
+      </div>
 
-                  <div style={{ marginTop: 8 }}>
-                    <b>ZH:</b> {item.zh1} ↔ {item.zh2}
-                  </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <button
+          onClick={() => speakSequence([item.en1, item.en2], "en-US")}
+          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+        >
+          🔊 EN
+        </button>
+        <button
+          onClick={() => speakSequence([item.zh1, item.zh2], "zh-CN")}
+          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+        >
+          🔊 ZH
+        </button>
+      </div>
+    </div>
 
-                  <div>
-                    <b>Pinyin:</b> {item.pinyin1} ↔ {item.pinyin2}
-                  </div>
+    <div style={{ marginTop: 8 }}>
+      <b>ZH:</b> {item.zh1} ↔ {item.zh2}
+    </div>
 
-                  <div>
-                    <b>VI:</b> {item.vi1} ↔ {item.vi2}
-                  </div>
+    <div>
+      <b>Pinyin:</b> {item.pinyin1} ↔ {item.pinyin2}
+    </div>
 
-                  {item.ex && (
-                    <div style={{ marginTop: 8 }}>
-                      <b>Example:</b> {item.ex}
-                    </div>
-                  )}
-                </div>
-              ))}
+    <div>
+      <b>VI:</b> {item.vi1} ↔ {item.vi2}
+    </div>
+
+    {item.ex && (
+      <div style={{ marginTop: 8 }}>
+        <b>Example:</b> {item.ex}
+      </div>
+    )}
+  </div>
+))}              
             </div>
+
+            <Pager
+              page={antonymsPaged.currentPage}
+              totalPages={antonymsPaged.totalPages}
+              onPrev={() => setAntonymsPage((p) => Math.max(1, p - 1))}
+              onNext={() => setAntonymsPage((p) => Math.min(antonymsPaged.totalPages, p + 1))}
+            />
+          </div>
+        )}
+       {mainTab === "grammar" && (
+  <div style={styles.mainPanel}>
+    <h2>Ngữ pháp + Quiz PRO</h2>
+
+    <div style={{ marginBottom: 12, fontWeight: 700 }}>
+      Điểm grammar: {grammarQuizScore}
+    </div>
+
+    <div
+      style={{
+        display: "flex",
+        gap: 10,
+        flexWrap: "wrap",
+        marginBottom: 16,
+      }}
+    >
+      <select
+        value={grammarLevel}
+        onChange={(e) => setGrammarLevel(e.target.value)}
+        style={styles.searchInput}
+      >
+        <option value="all">All levels</option>
+        <option value="basic">Basic</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+        <option value="pro">Pro</option>
+      </select>
+
+      <select
+        value={grammarCategory}
+        onChange={(e) => setGrammarCategory(e.target.value)}
+        style={styles.searchInput}
+      >
+        <option value="all">All categories</option>
+        {grammarCategories.map((cat) => (
+          <option key={cat} value={cat}>{cat}</option>
+        ))}
+      </select>
+
+      <button
+        onClick={() => setGrammarView("theory")}
+        style={{
+          ...styles.tabButton,
+          color: "#1e293b",
+          background: grammarView === "theory" ? "#dbeafe" : "#ffffff",
+        }}
+      >
+        Lý thuyết
+      </button>
+
+      <button
+        onClick={() => {
+          setGrammarView("quiz");
+          setGrammarMode("practice");
+          setGrammarExamQueue([]);
+          setGrammarExamIndex(0);
+          setGrammarExamCorrectCount(0);
+          setGrammarExamWrongCount(0);
+          generateGrammarQuiz();
+        }}
+        style={{
+          ...styles.tabButton,
+          color: "#1e293b",
+          background: grammarView === "quiz" ? "#dbeafe" : "#ffffff",
+        }}
+      >
+        Quiz
+      </button>
+    </div>
+
+    {grammarView === "theory" ? (
+      <div>
+        {filteredGrammarTheory.length === 0 ? (
+          <div style={styles.noteBox}>Không có mục ngữ pháp phù hợp bộ lọc.</div>
+        ) : (
+          <div style={styles.gridCards}>
+            {filteredGrammarTheory.map((g, idx) => (
+              <div key={g.id || idx} style={styles.wordCard}>
+                <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>
+                  {g.name}
+                </div>
+
+                <div><b>Category:</b> {g.category}</div>
+                <div><b>Level:</b> {g.level}</div>
+                <div><b>Formula:</b> {g.formula}</div>
+                <div><b>Use:</b> {g.use}</div>
+                <div><b>EN:</b> {g.example}</div>
+                <div><b>ZH:</b> {g.zh}</div>
+                <div><b>Pinyin:</b> {g.pinyin}</div>
+                <div><b>VI:</b> {g.vi}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    ) : (
+      <div>
+        <div
+          style={{
+            display: "flex",
+            gap: 10,
+            flexWrap: "wrap",
+            marginBottom: 16,
+          }}
+        >
+          <button
+            onClick={() => {
+              setGrammarMode("practice");
+              setGrammarExamQueue([]);
+              setGrammarExamIndex(0);
+              setGrammarExamCorrectCount(0);
+              setGrammarExamWrongCount(0);
+              generateGrammarQuiz();
+            }}
+            style={{
+              ...styles.tabButton,
+              color: "#1e293b",
+              background: grammarMode === "practice" ? "#dbeafe" : "#ffffff",
+            }}
+          >
+            Practice
+          </button>
+
+          <button
+            onClick={() => startGrammarExam(10)}
+            style={{
+              ...styles.tabButton,
+              color: "#1e293b",
+              background: "#ffffff",
+            }}
+          >
+            Exam 10
+          </button>
+
+          <button
+            onClick={() => startGrammarExam(20)}
+            style={{
+              ...styles.tabButton,
+              color: "#1e293b",
+              background: "#ffffff",
+            }}
+          >
+            Exam 20
+          </button>
+
+          <button
+            onClick={() => startGrammarExam(30)}
+            style={{
+              ...styles.tabButton,
+              color: "#1e293b",
+              background: "#ffffff",
+            }}
+          >
+            Exam 30
+          </button>
+        </div>
+
+        {grammarMode === "exam" && (
+          <div style={{ ...styles.noteBox, marginBottom: 16 }}>
+            Bài thi: {grammarExamIndex + 1}/{grammarExamQueue.length} | ✅ {grammarExamCorrectCount} | ❌ {grammarExamWrongCount}
           </div>
         )}
 
-        {mainTab === "grammar" && (
-          <div style={styles.mainPanel}>
-            <h2>Ngữ pháp + Quiz PRO</h2>
+        <div style={{ marginBottom: 30 }}>
+          <h3>🎯 Quiz ngữ pháp</h3>
 
-            <div style={{ marginBottom: 12, fontWeight: 700 }}>
-              Điểm grammar: {grammarQuizScore}
+          <div style={styles.wordCard}>
+            <div style={{ marginBottom: 10 }}>
+              <b>Chọn đáp án đúng:</b>
             </div>
 
-            <div style={{ marginBottom: 30 }}>
-              <h3>🎯 Quiz ngữ pháp PRO</h3>
+            <div style={{ fontSize: 20, fontWeight: 700, marginBottom: 10 }}>
+              {grammarQuizItem?.question || "Nhấn 'Quiz' hoặc 'Câu mới' để bắt đầu"}
+            </div>
 
-              <div style={styles.wordCard}>
-                <div style={{ marginBottom: 10 }}>
-                  <b>Chọn công thức đúng cho:</b>
-                </div>
+            {grammarQuizItem && (
+              <div style={{ marginBottom: 12, color: "#475569" }}>
+                <b>Category:</b> {grammarQuizItem.category} | <b>Level:</b> {grammarQuizItem.level}
+              </div>
+            )}
 
-                <div style={{ fontSize: 20, fontWeight: 700, marginBottom: 10 }}>
-                  {grammarQuizItem?.name || "Nhấn 'Câu mới' để bắt đầu"}
-                </div>
+            {grammarQuizOptions.map((opt, idx) => {
+              const isCorrectOption = opt === grammarQuizAnswer;
+              const isWrongSelected =
+                grammarQuizAnswered && opt !== grammarQuizAnswer;
 
-                {grammarQuizItem && (
-                  <div style={{ marginBottom: 12, color: "#475569" }}>
-                    <b>Use:</b> {grammarQuizItem.use}
-                  </div>
-                )}
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleGrammarQuizAnswer(opt)}
+                  disabled={grammarQuizAnswered}
+                  style={{
+                    ...styles.wordCard,
+                    width: "100%",
+                    cursor: grammarQuizAnswered ? "default" : "pointer",
+                    textAlign: "left",
+                    fontSize: 16,
+                    marginBottom: 8,
+                    background:
+                      !grammarQuizAnswered
+                        ? "#ffffff"
+                        : isCorrectOption
+                        ? "#16a34a"
+                        : isWrongSelected
+                        ? "#dc2626"
+                        : "#ffffff",
+                    color:
+                      !grammarQuizAnswered
+                        ? "#1e293b"
+                        : isCorrectOption || isWrongSelected
+                        ? "#ffffff"
+                        : "#1e293b",
+                    border:
+                      !grammarQuizAnswered
+                        ? "1px solid #e2e8f0"
+                        : isCorrectOption || isWrongSelected
+                        ? "none"
+                        : "1px solid #e2e8f0",
+                  }}
+                >
+                  {opt}
+                </button>
+              );
+            })}
 
-                {grammarQuizOptions.map((opt, idx) => {
-                  const isCorrectOption = opt === grammarQuizAnswer;
-                  const isWrongSelected =
-                    grammarQuizAnswered && opt !== grammarQuizAnswer;
+            {grammarQuizMessage && (
+              <div style={{ ...styles.noteBox, marginTop: 12 }}>
+                {grammarQuizMessage}
+              </div>
+            )}
 
-                  return (
+            {grammarQuizItem && grammarQuizAnswered && (
+              <div
+                style={{
+                  marginTop: 12,
+                  padding: 12,
+                  borderRadius: 12,
+                  background: "#f8fafc",
+                  border: "1px solid #e2e8f0",
+                  lineHeight: 1.7,
+                }}
+              >
+                <div><b>Giải thích:</b> {grammarQuizItem.explanation}</div>
+              </div>
+            )}
+
+            <div style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {grammarMode === "practice" ? (
+                <button
+                  onClick={() => generateGrammarQuiz()}
+                  style={{
+                    ...styles.tabButton,
+                    color: "#1e293b",
+                    background: "#ffffff",
+                  }}
+                >
+                  Câu mới
+                </button>
+              ) : (
+                <button
+                  onClick={nextGrammarExamQuestion}
+                  disabled={!grammarQuizAnswered}
+                  style={{
+                    ...styles.tabButton,
+                    color: "#1e293b",
+                    background: "#ffffff",
+                    opacity: !grammarQuizAnswered ? 0.5 : 1,
+                  }}
+                >
+                  Câu tiếp
+                </button>
+              )}
+
+              <button
+                onClick={resetGrammarExam}
+                style={{
+                  ...styles.tabButton,
+                  color: "#1e293b",
+                  background: "#ffffff",
+                }}
+              >
+                Reset mode
+              </button>
+
+              <button
+                onClick={() => {
+                  setGrammarQuizScore(0);
+                  localStorage.setItem("grammarQuizScore", "0");
+                }}
+                style={{
+                  ...styles.tabButton,
+                  color: "#1e293b",
+                  background: "#ffffff",
+                }}
+              >
+                Reset điểm
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginBottom: 20 }}>
+          <h3>❌ Wrong Bank</h3>
+          {grammarWrongBank.length === 0 ? (
+            <div style={styles.noteBox}>Chưa có câu sai nào.</div>
+          ) : (
+            <div style={styles.gridCards}>
+              {grammarWrongBank.map((item) => (
+                <div key={item.id} style={styles.wordCard}>
+                  <div><b>Question:</b> {item.question}</div>
+                  <div><b>Correct:</b> {item.correct}</div>
+                  <div><b>Explain:</b> {item.explanation}</div>
+                  <div style={{ marginTop: 10 }}>
                     <button
-                      key={idx}
-                      onClick={() => handleGrammarQuizAnswer(opt)}
-                      disabled={grammarQuizAnswered}
+                      onClick={() =>
+                        setGrammarWrongBank((prev) => prev.filter((x) => x.id !== item.id))
+                      }
                       style={{
-                        ...styles.wordCard,
-                        width: "100%",
-                        cursor: grammarQuizAnswered ? "default" : "pointer",
-                        textAlign: "left",
-                        fontSize: 16,
-                        marginBottom: 8,
-                        background:
-                          !grammarQuizAnswered
-                            ? "#ffffff"
-                            : isCorrectOption
-                            ? "#16a34a"
-                            : isWrongSelected
-                            ? "#dc2626"
-                            : "#ffffff",
-                        color:
-                          !grammarQuizAnswered
-                            ? "#1e293b"
-                            : isCorrectOption || isWrongSelected
-                            ? "#ffffff"
-                            : "#1e293b",
-                        border:
-                          !grammarQuizAnswered
-                            ? "1px solid #e2e8f0"
-                            : isCorrectOption || isWrongSelected
-                            ? "none"
-                            : "1px solid #e2e8f0",
+                        ...styles.tabButton,
+                        color: "#1e293b",
+                        background: "#ffffff",
                       }}
                     >
-                      {opt}
+                      Xóa
                     </button>
-                  );
-                })}
-
-                {grammarQuizMessage && (
-                  <div style={{ ...styles.noteBox, marginTop: 12 }}>
-                    {grammarQuizMessage}
                   </div>
-                )}
-
-                {grammarQuizItem && grammarQuizAnswered && (
-                  <div
-                    style={{
-                      marginTop: 12,
-                      padding: 12,
-                      borderRadius: 12,
-                      background: "#f8fafc",
-                      border: "1px solid #e2e8f0",
-                      lineHeight: 1.7,
-                    }}
-                  >
-                    <div><b>Grammar:</b> {grammarQuizItem.name}</div>
-                    <div><b>Formula:</b> {grammarQuizItem.formula}</div>
-                    <div><b>Use:</b> {grammarQuizItem.use}</div>
-                    <div><b>EN:</b> {grammarQuizItem.example}</div>
-                    <div><b>ZH:</b> {grammarQuizItem.zh}</div>
-                    <div><b>Pinyin:</b> {grammarQuizItem.pinyin}</div>
-                    <div><b>VI:</b> {grammarQuizItem.vi}</div>
-                  </div>
-                )}
-
-                <div style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  <button
-                    onClick={generateGrammarQuiz}
-                    style={{
-                      ...styles.tabButton,
-                      color: "#1e293b",
-                      background: "#ffffff",
-                    }}
-                  >
-                    Câu mới
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setGrammarQuizScore(0);
-                      localStorage.setItem("grammarQuizScore", "0");
-                    }}
-                    style={{
-                      ...styles.tabButton,
-                      color: "#1e293b",
-                      background: "#ffffff",
-                    }}
-                  >
-                    Reset điểm grammar
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div style={styles.gridCards}>
-              {allGrammar.map((g, idx) => (
-                <div key={idx} style={styles.wordCard}>
-                  <div><b>{g.name}</b></div>
-                  <div><b>Formula:</b> {g.formula}</div>
-                  <div><b>Use:</b> {g.use}</div>
-                  <div><b>EN:</b> {g.example}</div>
-                  <div><b>ZH:</b> {g.zh}</div>
-                  <div><b>Pinyin:</b> {g.pinyin}</div>
-                  <div><b>VI:</b> {g.vi}</div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+)}
         {mainTab === "quiz" && (
           <div style={styles.mainPanel}>
             <h2 style={{ marginTop: 0 }}>Quiz chọn đáp án</h2>
@@ -1261,7 +1995,7 @@ export default function App() {
             )}
           </div>
         )}
-        {mainTab === "sentences" && (
+               {mainTab === "sentences" && (
           <div style={styles.mainPanel}>
             <div style={styles.headerRow}>
               <div>
@@ -1280,7 +2014,7 @@ export default function App() {
             </div>
 
             <div style={styles.gridCards}>
-              {filteredSentences.map((item, idx) => (
+              {sentencesPaged.pagedItems.map((item, idx) => (
                 <div key={idx} style={styles.wordCard}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                     <div><b>EN:</b> {item.en}</div>
@@ -1315,10 +2049,16 @@ export default function App() {
                 </div>
               ))}
             </div>
+
+            <Pager
+              page={sentencesPaged.currentPage}
+              totalPages={sentencesPaged.totalPages}
+              onPrev={() => setSentencesPage((p) => Math.max(1, p - 1))}
+              onNext={() => setSentencesPage((p) => Math.min(sentencesPaged.totalPages, p + 1))}
+            />
           </div>
         )}
-
-        {mainTab === "dialogues" && (
+               {mainTab === "dialogues" && (
           <div style={styles.mainPanel}>
             <div style={styles.headerRow}>
               <div>
@@ -1337,7 +2077,7 @@ export default function App() {
             </div>
 
             <div style={styles.gridCards}>
-              {filteredDialogues.map((dialogue, idx) => (
+              {dialoguesPaged.pagedItems.map((dialogue, idx) => (
                 <div key={idx} style={styles.wordCard}>
                   <div style={{ fontSize: 18, fontWeight: 700 }}>
                     {dialogue.topic}
@@ -1395,98 +2135,377 @@ export default function App() {
                 </div>
               ))}
             </div>
+
+            <Pager
+              page={dialoguesPaged.currentPage}
+              totalPages={dialoguesPaged.totalPages}
+              onPrev={() => setDialoguesPage((p) => Math.max(1, p - 1))}
+              onNext={() => setDialoguesPage((p) => Math.min(dialoguesPaged.totalPages, p + 1))}
+            />
           </div>
         )}
-{mainTab === "life" && (
-  <div style={styles.mainPanel}>
-    <h2>Life Lessons</h2>
+        {mainTab === "life" && (
+          <div style={styles.mainPanel}>
+            <h2>Life Lessons</h2>
 
-    <div style={styles.gridCards}>
-      {allLifeLessons.map((item, index) => (
-        <div key={index} style={styles.wordCard}>
-          <div style={{ fontSize: 18, fontWeight: 700, color: "#1e293b" }}>
-            {index + 1}. {item.title ? item.title : "Life Lesson"}
-          </div>
+            <div style={styles.gridCards}>
+              {lifePaged.pagedItems.map((item, index) => (
+                <div key={index} style={styles.wordCard}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: "#1e293b" }}>
+                    {index + 1}. {item.title ? item.title : "Life Lesson"}
+                  </div>
 
-          <div
-            style={{
-              marginTop: 8,
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              flexWrap: "wrap",
-            }}
-          >
-            <div style={{ color: "#1e293b" }}>
-              <b>EN:</b> {item.en || ""}
+                  <div
+                    style={{
+                      marginTop: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <div style={{ color: "#1e293b" }}>
+                      <b>EN:</b> {item.en || ""}
+                    </div>
+
+                    {!!item.en && (
+                      <button
+                        onClick={() => speakText(item.en, "en-US")}
+                        style={{
+                          ...styles.tabButton,
+                          color: "#1e293b",
+                          background: "#ffffff",
+                        }}
+                      >
+                        🔊 EN
+                      </button>
+                    )}
+                  </div>
+
+                  <div
+                    style={{
+                      marginTop: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <div style={{ color: "#1e293b" }}>
+                      <b>ZH:</b> {item.zh || ""}
+                    </div>
+
+                    {!!item.zh && (
+                      <button
+                        onClick={() => speakText(item.zh, "zh-CN")}
+                        style={{
+                          ...styles.tabButton,
+                          color: "#1e293b",
+                          background: "#ffffff",
+                        }}
+                      >
+                        🔊 ZH
+                      </button>
+                    )}
+                  </div>
+
+                  <div style={{ marginTop: 8, color: "#1e293b", textTransform: "none" }}>
+                    <b>Pinyin:</b> {item.pinyin || ""}
+                  </div>
+
+                  <div style={{ marginTop: 8, color: "#1e293b" }}>
+                    <b>VI:</b> {item.vi || ""}
+                  </div>
+
+                  {item.story && (
+                    <div style={{ marginTop: 8, color: "#1e293b" }}>
+                      <b>Story:</b> {item.story}
+                    </div>
+                  )}
+
+                  {Array.isArray(item.keywords) && item.keywords.length > 0 && (
+                    <div style={{ marginTop: 8, color: "#64748b", textTransform: "none" }}>
+                      #{item.keywords.join(", ")}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
 
-            {!!item.en && (
-              <button
-                onClick={() => speakText(item.en, "en-US")}
-                style={{
-                  ...styles.tabButton,
-                  color: "#1e293b",
-                  background: "#ffffff",
-                }}
-              >
-                🔊 EN
-              </button>
+            <Pager
+              page={lifePaged.currentPage}
+              totalPages={lifePaged.totalPages}
+              onPrev={() => setLifePage((p) => Math.max(1, p - 1))}
+              onNext={() => setLifePage((p) => Math.min(lifePaged.totalPages, p + 1))}
+            />
+          </div>
+        )}  
+        {mainTab === "favorites" && (
+          <div style={styles.mainPanel}>
+            <div style={styles.headerRow}>
+              <div>
+                <h2 style={{ margin: 0 }}>Từ yêu thích</h2>
+                <p style={styles.muted}>Những từ bạn đã đánh dấu sao.</p>
+              </div>
+            </div>
+
+            {favoriteTopicWords.length === 0 ? (
+              <div style={styles.noteBox}>Chưa có từ yêu thích nào.</div>
+            ) : (
+              <div style={styles.gridCards}>
+                {favoriteTopicWords.map((word, idx) => (
+                  <div key={word._favId || idx} style={styles.wordCard}>
+                    <div><b>Topic:</b> {word._topicName}</div>
+                    <div><b>EN:</b> {word.en}</div>
+                    <div><b>ZH:</b> {word.zh}</div>
+                    <div><b>Pinyin:</b> {word.pinyin}</div>
+                    <div><b>VI:</b> {word.vi}</div>
+
+                    <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
+                      <button
+                        onClick={() => speakText(word.en, "en-US")}
+                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                      >
+                        🔊 EN
+                      </button>
+
+                      <button
+                        onClick={() => speakText(word.zh, "zh-CN")}
+                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                      >
+                        🔊 ZH
+                      </button>
+
+                      <button
+                        onClick={() => toggleFavorite(word._favId)}
+                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                      >
+                        Bỏ sao
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          addToReview({
+                            id: word._favId,
+                            type: "word",
+                            en: word.en,
+                            zh: word.zh,
+                            pinyin: word.pinyin,
+                            vi: word.vi,
+                          })
+                        }
+                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                      >
+                        Ôn tập
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
+        )}
+               {mainTab === "review" && (
+          <div style={styles.mainPanel}>
+            <div style={styles.headerRow}>
+              <div>
+                <h2 style={{ margin: 0 }}>Ôn tập & yêu thích</h2>
+                <p style={styles.muted}>Từ/câu bạn đã lưu để ôn lại sau.</p>
+              </div>
 
-          <div
-            style={{
-              marginTop: 8,
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              flexWrap: "wrap",
-            }}
-          >
-            <div style={{ color: "#1e293b" }}>
-              <b>ZH:</b> {item.zh || ""}
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                {!reviewMode && (
+                  <>
+                    <button
+                      onClick={() => startReviewSession(true)}
+                      disabled={reviewItems.length === 0}
+                      style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                    >
+                      Bắt đầu ôn tập
+                    </button>
+
+                    <button
+                      onClick={() => startReviewSession(false)}
+                      disabled={reviewItems.length === 0}
+                      style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                    >
+                      Ôn theo thứ tự
+                    </button>
+                  </>
+                )}
+
+                <button
+                  onClick={() => {
+                    setReviewItems([]);
+                    localStorage.setItem("reviewItems", "[]");
+                    stopReviewSession();
+                  }}
+                  style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                >
+                  Xóa ôn tập
+                </button>
+              </div>
             </div>
 
-            {!!item.zh && (
-              <button
-                onClick={() => speakText(item.zh, "zh-CN")}
-                style={{
-                  ...styles.tabButton,
-                  color: "#1e293b",
-                  background: "#ffffff",
-                }}
-              >
-                🔊 ZH
-              </button>
+            {reviewItems.length === 0 ? (
+              <div style={styles.noteBox}>Chưa có mục ôn tập nào.</div>
+            ) : reviewMode ? (
+              <div style={styles.wordCard}>
+                <div style={{ marginBottom: 12, fontWeight: 700 }}>
+                  Flashcard review
+                </div>
+
+                <div style={{ marginBottom: 10, color: "#475569" }}>
+                  Thẻ {reviewIndex + 1}/{reviewProgressTotal}
+                </div>
+
+                <div
+                  style={{
+                    width: "100%",
+                    height: 10,
+                    background: "#e5e7eb",
+                    borderRadius: 999,
+                    overflow: "hidden",
+                    marginBottom: 18,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: `${reviewProgressPercent}%`,
+                      height: "100%",
+                      background: "#22c55e",
+                      borderRadius: 999,
+                    }}
+                  />
+                </div>
+
+                {currentReviewItem && (
+                  <>
+                    <div style={{ fontSize: 26, fontWeight: 800, marginBottom: 12 }}>
+                      {currentReviewItem.en || currentReviewItem.zh || currentReviewItem.vi}
+                    </div>
+
+                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 16 }}>
+                      {!!currentReviewItem.en && (
+                        <button
+                          onClick={() => speakText(currentReviewItem.en, "en-US")}
+                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                        >
+                          🔊 EN
+                        </button>
+                      )}
+
+                      {!!currentReviewItem.zh && (
+                        <button
+                          onClick={() => speakText(currentReviewItem.zh, "zh-CN")}
+                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                        >
+                          🔊 ZH
+                        </button>
+                      )}
+
+                      <button
+                        onClick={() => setReviewShowAnswer((v) => !v)}
+                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                      >
+                        {reviewShowAnswer ? "Ẩn đáp án" : "Hiện đáp án"}
+                      </button>
+                    </div>
+
+                    {reviewShowAnswer && (
+                      <div
+                        style={{
+                          padding: 14,
+                          borderRadius: 12,
+                          background: "#f8fafc",
+                          border: "1px solid #e2e8f0",
+                          lineHeight: 1.8,
+                          marginBottom: 16,
+                        }}
+                      >
+                        {currentReviewItem.en && <div><b>EN:</b> {currentReviewItem.en}</div>}
+                        {currentReviewItem.zh && <div><b>ZH:</b> {currentReviewItem.zh}</div>}
+                        {currentReviewItem.pinyin && <div><b>Pinyin:</b> {currentReviewItem.pinyin}</div>}
+                        {currentReviewItem.vi && <div><b>VI:</b> {currentReviewItem.vi}</div>}
+                      </div>
+                    )}
+
+                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                      <button
+                        onClick={() => handleReviewAnswer(true)}
+                        style={{ ...styles.tabButton, color: "#ffffff", background: "#16a34a" }}
+                      >
+                        Đã nhớ
+                      </button>
+
+                      <button
+                        onClick={() => handleReviewAnswer(false)}
+                        style={{ ...styles.tabButton, color: "#ffffff", background: "#dc2626" }}
+                      >
+                        Chưa nhớ
+                      </button>
+
+                      <button
+                        onClick={stopReviewSession}
+                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                      >
+                        Thoát
+                      </button>
+                    </div>
+
+                    <div style={{ marginTop: 16, color: "#475569", lineHeight: 1.8 }}>
+                      <div>✅ Đã nhớ: {reviewKnown}</div>
+                      <div>❌ Chưa nhớ: {reviewUnknown}</div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <div style={styles.gridCards}>
+                {reviewItems.map((item, idx) => (
+                  <div key={item._reviewId || idx} style={styles.wordCard}>
+                    {item.en && <div><b>EN:</b> {item.en}</div>}
+                    {item.zh && <div><b>ZH:</b> {item.zh}</div>}
+                    {item.pinyin && <div><b>Pinyin:</b> {item.pinyin}</div>}
+                    {item.vi && <div><b>VI:</b> {item.vi}</div>}
+
+                    <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
+                      {!!item.en && (
+                        <button
+                          onClick={() => speakText(item.en, "en-US")}
+                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                        >
+                          🔊 EN
+                        </button>
+                      )}
+
+                      {!!item.zh && (
+                        <button
+                          onClick={() => speakText(item.zh, "zh-CN")}
+                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                        >
+                          🔊 ZH
+                        </button>
+                      )}
+
+                      <button
+                        onClick={() =>
+                          setReviewItems((prev) =>
+                            prev.filter((x) => x._reviewId !== item._reviewId)
+                          )
+                        }
+                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                      >
+                        Xóa
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
-
-          <div style={{ marginTop: 8, color: "#1e293b", textTransform: "none" }}>
-            <b>Pinyin:</b> {item.pinyin || ""}
-          </div>
-
-          <div style={{ marginTop: 8, color: "#1e293b" }}>
-            <b>VI:</b> {item.vi || ""}
-          </div>
-
-          {item.story && (
-            <div style={{ marginTop: 8, color: "#1e293b" }}>
-              <b>Story:</b> {item.story}
-            </div>
-          )}
-
-          {Array.isArray(item.keywords) && item.keywords.length > 0 && (
-            <div style={{ marginTop: 8, color: "#64748b", textTransform: "none" }}>
-              #{item.keywords.join(", ")}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-  {mainTab === "roadmap" && (
+        )}
+{mainTab === "roadmap" && (
           <div style={styles.mainPanel}>
             <h2 style={{ marginTop: 0 }}>Lộ trình nâng thành bản PRO hoàn chỉnh</h2>
             <div style={styles.roadmapGrid}>
