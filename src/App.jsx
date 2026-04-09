@@ -466,6 +466,20 @@ function resetGrammarExam() {
     null
   );
 }
+function unlockSpeech() {
+  if (typeof window === "undefined") return;
+  if (!("speechSynthesis" in window)) return;
+
+  try {
+    const synth = window.speechSynthesis;
+    const warmup = new SpeechSynthesisUtterance(" ");
+    warmup.volume = 0;
+    synth.speak(warmup);
+    synth.cancel();
+  } catch (err) {
+    console.log("unlockSpeech error:", err);
+  }
+}
 
 function speakText(text, lang = "en-US") {
   if (typeof window === "undefined") return;
@@ -475,30 +489,57 @@ function speakText(text, lang = "en-US") {
   const safeText = String(text).trim();
   if (!safeText) return;
 
-  try {
-    synth.cancel();
+  const speakNow = () => {
+    try {
+      synth.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(safeText);
-    utterance.lang = lang;
-    utterance.rate = 0.9;
-    utterance.pitch = 1;
-    utterance.volume = 1;
+      const utterance = new SpeechSynthesisUtterance(safeText);
+      utterance.lang = lang;
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.volume = 1;
 
-    const voice = getMobileFriendlyVoice(lang);
-    if (voice) utterance.voice = voice;
+      const voice = getMobileFriendlyVoice(lang);
+      if (voice) utterance.voice = voice;
 
-    utterance.onerror = (e) => {
-      console.log("speech error:", e);
-    };
+      utterance.onerror = (e) => {
+        console.log("speech error:", e);
+      };
 
-    setTimeout(() => {
       synth.speak(utterance);
-    }, 50);
-  } catch (err) {
-    console.log("speakText error:", err);
-  }
-}
+    } catch (err) {
+      console.log("speakText error:", err);
+    }
+  };
 
+  const voices = synth.getVoices();
+
+  if (voices && voices.length > 0) {
+    speakNow();
+    return;
+  }
+
+  let hasSpoken = false;
+
+  const handleVoicesReady = () => {
+    if (hasSpoken) return;
+    hasSpoken = true;
+    speakNow();
+  };
+
+  if (typeof synth.addEventListener === "function") {
+    synth.addEventListener("voiceschanged", handleVoicesReady, { once: true });
+  } else {
+    synth.onvoiceschanged = handleVoicesReady;
+  }
+
+  setTimeout(() => {
+    if (!hasSpoken) {
+      hasSpoken = true;
+      speakNow();
+    }
+  }, 300);
+}
 function speakSequence(texts = [], lang = "en-US") {
   if (typeof window === "undefined") return;
   if (!("speechSynthesis" in window)) return;
@@ -525,7 +566,7 @@ function speakSequence(texts = [], lang = "en-US") {
       if (voice) utterance.voice = voice;
 
       utterance.onend = () => {
-        setTimeout(() => speakAtIndex(index + 1), 120);
+        setTimeout(() => speakAtIndex(index + 1), 180);
       };
 
       utterance.onerror = (e) => {
@@ -539,8 +580,12 @@ function speakSequence(texts = [], lang = "en-US") {
   };
 
   const startSpeaking = () => {
-    synth.cancel();
-    speakAtIndex(0);
+    try {
+      synth.cancel();
+      speakAtIndex(0);
+    } catch (err) {
+      console.log("startSpeaking error:", err);
+    }
   };
 
   const voices = synth.getVoices();
@@ -1068,9 +1113,6 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                       <div><b>EN:</b> {randomWord.en}</div>
                       <button
   type="button"
-  onTouchStart={(e) => {
-    e.stopPropagation();
-  }}
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -1084,11 +1126,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
 
                     <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginTop: 8 }}>
                       <div style={styles.zh}><b>ZH:</b> {randomWord.zh}</div>
-                      <button
+                     <button
   type="button"
-  onTouchStart={(e) => {
-    e.stopPropagation();
-  }}
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -1097,7 +1136,7 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
   style={styles.audioBtn}
 >
   🔊 ZH
-</button> 
+</button>
                    </div>
 
                     {showAnswer && (
@@ -1198,22 +1237,20 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
 
             <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  addToReview({
-                    id: favId,
-                    type: "word",
-                    en: word.en,
-                    zh: word.zh,
-                    pinyin: word.pinyin,
-                    vi: word.vi,
-                  });
-                }}
-                style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-              >
-                Ôn tập
-              </button>
-            </div>
+  onClick={() =>
+    addToReview({
+      id: word._favId,
+      type: "word",
+      en: word.en,
+      zh: word.zh,
+      pinyin: word.pinyin,
+      vi: word.vi,
+    })
+  }
+  style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+>
+  Ôn tập
+</button>            </div>
           </>
         )}
       </div>
@@ -1282,11 +1319,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
     <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
       <div><b>EN:</b> {item.en}</div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <button
+  <button
   type="button"
-  onTouchStart={(e) => {
-    e.stopPropagation();
-  }}
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -1357,11 +1391,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
     <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
       <div><b>EN:</b> {item.en}</div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-       <button
+  <button
   type="button"
-  onTouchStart={(e) => {
-    e.stopPropagation();
-  }}
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -1371,11 +1402,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
 >
   🔊 EN
 </button>
-       <button
+     <button
   type="button"
-  onTouchStart={(e) => {
-    e.stopPropagation();
-  }}
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -1431,29 +1459,32 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
       </div>
 
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-       <button
+ <button
   type="button"
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
+    unlockSpeech();
     speakSequence([item.en1, item.en2], "en-US");
   }}
   style={styles.audioBtn}
 >
   🔊 EN
 </button>
-        <button
+
+<button
   type="button"
   onClick={(e) => {
     e.preventDefault();
     e.stopPropagation();
+    unlockSpeech();
     speakSequence([item.zh1, item.zh2], "zh-CN");
   }}
   style={styles.audioBtn}
 >
   🔊 ZH
 </button>
-      </div>
+            </div>
     </div>
 
     <div style={{ marginTop: 8 }}>
@@ -2070,22 +2101,26 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
             {listeningWord && (
               <div>
                 <div style={styles.wordCard}>
-                  <button
-                    onClick={() => {
-                      if (listeningMode === "en-vi" || listeningMode === "vi-en") {
-                        speakText(listeningWord.en, "en-US");
-                      } else if (listeningMode === "zh-vi") {
-                        speakText(listeningWord.zh, "zh-CN");
-                      }
-                    }}
-                    style={{
-                      ...styles.tabButton,
-                      color: "#1e293b",
-                      background: "#ffffff",
-                    }}
-                  >
-                    🔊 Nghe
-                  </button>
+                 <button
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();
+    unlockSpeech();
+
+    if (listeningMode === "en-vi" || listeningMode === "vi-en") {
+      speakText(listeningWord.en, "en-US");
+    } else if (listeningMode === "zh-vi") {
+      speakText(listeningWord.zh, "zh-CN");
+    }
+  }}
+  style={{
+    ...styles.tabButton,
+    color: "#1e293b",
+    background: "#ffffff",
+  }}
+>
+  🔊 Nghe
+</button>
                 </div>
 
                 <div style={{ ...styles.gridCards, marginTop: 16 }}>
@@ -2178,31 +2213,34 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                 <div key={idx} style={styles.wordCard}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                     <div><b>EN:</b> {item.en}</div>
-                    <button
-                      onClick={() => speakText(item.en, "en-US")}
-                      style={{
-                        ...styles.tabButton,
-                        color: "#1e293b",
-                        background: "#ffffff",
-                      }}
-                    >
-                      🔊 EN
-                    </button>
+                  <button
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    unlockSpeech();
+    speakText(item.en, "en-US");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 EN
+</button>
                   </div>
 
                   <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginTop: 8 }}>
                     <div><b>ZH:</b> {item.zh}</div>
                     <button
-                      onClick={() => speakText(item.zh, "zh-CN")}
-                      style={{
-                        ...styles.tabButton,
-                        color: "#1e293b",
-                        background: "#ffffff",
-                      }}
-                    >
-                      🔊 ZH
-                    </button>
-                  </div>
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    unlockSpeech();
+    speakText(item.zh, "zh-CN");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 ZH
+</button>                  </div>
 
                   <div><b>Pinyin:</b> {item.pinyin}</div>
                   <div><b>VI:</b> {item.vi}</div>
@@ -2262,29 +2300,41 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                           <div><b>EN:</b> {line.en}</div>
                           <button
-                            onClick={() => speakText(line.en, "en-US")}
-                            style={{
-                              ...styles.tabButton,
-                              color: "#1e293b",
-                              background: "#ffffff",
-                            }}
-                          >
-                            🔊 EN
-                          </button>
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    unlockSpeech();
+    speakText(line.en, "en-US");
+  }}
+  style={{
+    ...styles.tabButton,
+    color: "#1e293b",
+    background: "#ffffff",
+  }}
+>
+  🔊 EN
+</button>
                         </div>
 
                         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginTop: 6 }}>
                           <div><b>ZH:</b> {line.zh}</div>
-                          <button
-                            onClick={() => speakText(line.zh, "zh-CN")}
-                            style={{
-                              ...styles.tabButton,
-                              color: "#1e293b",
-                              background: "#ffffff",
-                            }}
-                          >
-                            🔊 ZH
-                          </button>
+                         <button
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    unlockSpeech();
+    speakText(line.zh, "zh-CN");
+  }}
+  style={{
+    ...styles.tabButton,
+    color: "#1e293b",
+    background: "#ffffff",
+  }}
+>
+  🔊 ZH
+</button>
                         </div>
 
                         <div><b>Pinyin:</b> {line.pinyin}</div>
@@ -2329,17 +2379,24 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                     </div>
 
                     {!!item.en && (
-                      <button
-                        onClick={() => speakText(item.en, "en-US")}
-                        style={{
-                          ...styles.tabButton,
-                          color: "#1e293b",
-                          background: "#ffffff",
-                        }}
-                      >
-                        🔊 EN
-                      </button>
-                    )}
+  <button
+    type="button"
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      unlockSpeech();
+      speakText(item.en, "en-US");
+    }}
+    style={{
+      ...styles.tabButton,
+      color: "#1e293b",
+      background: "#ffffff",
+    }}
+  >
+    🔊 EN
+  </button>
+)}   
+      
                   </div>
 
                   <div
@@ -2356,17 +2413,23 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                     </div>
 
                     {!!item.zh && (
-                      <button
-                        onClick={() => speakText(item.zh, "zh-CN")}
-                        style={{
-                          ...styles.tabButton,
-                          color: "#1e293b",
-                          background: "#ffffff",
-                        }}
-                      >
-                        🔊 ZH
-                      </button>
-                    )}
+  <button
+    type="button"
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      unlockSpeech();
+      speakText(item.zh, "zh-CN");
+    }}
+    style={{
+      ...styles.tabButton,
+      color: "#1e293b",
+      background: "#ffffff",
+    }}
+  >
+    🔊 ZH
+  </button>
+)}              
                   </div>
 
                   <div style={{ marginTop: 8, color: "#1e293b", textTransform: "none" }}>
@@ -2423,19 +2486,28 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
 
                     <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
                       <button
-                        onClick={() => speakText(word.en, "en-US")}
-                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                      >
-                        🔊 EN
-                      </button>
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    unlockSpeech();
+    speakText(word.en, "en-US");
+  }}
+  style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+>
+  🔊 EN
+</button>
 
-                      <button
-                        onClick={() => speakText(word.zh, "zh-CN")}
-                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                      >
-                        🔊 ZH
-                      </button>
-
+                     <button
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    unlockSpeech();
+    speakText(word.zh, "zh-CN");
+  }}
+  style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+>
+  🔊 ZH
+</button>
                       <button
                         onClick={() => toggleFavorite(word._favId)}
                         style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
@@ -2465,206 +2537,226 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
             )}
           </div>
         )}
-               {mainTab === "review" && (
-          <div style={styles.mainPanel}>
-            <div style={styles.headerRow}>
-              <div>
-                <h2 style={{ margin: 0 }}>Ôn tập & yêu thích</h2>
-                <p style={styles.muted}>Từ/câu bạn đã lưu để ôn lại sau.</p>
-              </div>
+            {mainTab === "review" && (
+  <div style={styles.mainPanel}>
+    <div style={styles.headerRow}>
+      <div>
+        <h2 style={{ margin: 0 }}>Ôn tập</h2>
+        <p style={styles.muted}>Từ/câu bạn đã lưu để ôn lại sau.</p>
+      </div>
 
-              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                {!reviewMode && (
-                  <>
-                    <button
-                      onClick={() => startReviewSession(true)}
-                      disabled={reviewItems.length === 0}
-                      style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                    >
-                      Bắt đầu ôn tập
-                    </button>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        {!reviewMode && (
+          <>
+            <button
+              onClick={() => startReviewSession(true)}
+              disabled={reviewItems.length === 0}
+              style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+            >
+              Bắt đầu ôn tập
+            </button>
 
-                    <button
-                      onClick={() => startReviewSession(false)}
-                      disabled={reviewItems.length === 0}
-                      style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                    >
-                      Ôn theo thứ tự
-                    </button>
-                  </>
-                )}
+            <button
+              onClick={() => startReviewSession(false)}
+              disabled={reviewItems.length === 0}
+              style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+            >
+              Ôn theo thứ tự
+            </button>
+          </>
+        )}
 
+        <button
+          onClick={() => {
+            setReviewItems([]);
+            localStorage.setItem("reviewItems", "[]");
+            stopReviewSession();
+          }}
+          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+        >
+          Xóa ôn tập
+        </button>
+      </div>
+    </div>
+
+    {reviewItems.length === 0 ? (
+      <div style={styles.noteBox}>Chưa có mục ôn tập nào.</div>
+    ) : reviewMode ? (
+      <div style={styles.wordCard}>
+        <div style={{ marginBottom: 12, fontWeight: 700 }}>
+          Flashcard review
+        </div>
+
+        <div style={{ marginBottom: 10, color: "#475569" }}>
+          Thẻ {reviewIndex + 1}/{reviewProgressTotal}
+        </div>
+
+        <div
+          style={{
+            width: "100%",
+            height: 10,
+            background: "#e5e7eb",
+            borderRadius: 999,
+            overflow: "hidden",
+            marginBottom: 18,
+          }}
+        >
+          <div
+            style={{
+              width: `${reviewProgressPercent}%`,
+              height: "100%",
+              background: "#22c55e",
+              borderRadius: 999,
+            }}
+          />
+        </div>
+
+        {currentReviewItem && (
+          <>
+            <div style={{ fontSize: 26, fontWeight: 800, marginBottom: 12 }}>
+              {currentReviewItem.en || currentReviewItem.zh || currentReviewItem.vi}
+            </div>
+
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 16 }}>
+              {!!currentReviewItem.en && (
                 <button
-                  onClick={() => {
-                    setReviewItems([]);
-                    localStorage.setItem("reviewItems", "[]");
-                    stopReviewSession();
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    unlockSpeech();
+                    speakText(currentReviewItem.en, "en-US");
                   }}
                   style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
                 >
-                  Xóa ôn tập
+                  🔊 EN
                 </button>
-              </div>
+              )}
+
+              {!!currentReviewItem.zh && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    unlockSpeech();
+                    speakText(currentReviewItem.zh, "zh-CN");
+                  }}
+                  style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                >
+                  🔊 ZH
+                </button>
+              )}
+
+              <button
+                onClick={() => setReviewShowAnswer((v) => !v)}
+                style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+              >
+                {reviewShowAnswer ? "Ẩn đáp án" : "Hiện đáp án"}
+              </button>
             </div>
 
-            {reviewItems.length === 0 ? (
-              <div style={styles.noteBox}>Chưa có mục ôn tập nào.</div>
-            ) : reviewMode ? (
-              <div style={styles.wordCard}>
-                <div style={{ marginBottom: 12, fontWeight: 700 }}>
-                  Flashcard review
-                </div>
-
-                <div style={{ marginBottom: 10, color: "#475569" }}>
-                  Thẻ {reviewIndex + 1}/{reviewProgressTotal}
-                </div>
-
-                <div
-                  style={{
-                    width: "100%",
-                    height: 10,
-                    background: "#e5e7eb",
-                    borderRadius: 999,
-                    overflow: "hidden",
-                    marginBottom: 18,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: `${reviewProgressPercent}%`,
-                      height: "100%",
-                      background: "#22c55e",
-                      borderRadius: 999,
-                    }}
-                  />
-                </div>
-
-                {currentReviewItem && (
-                  <>
-                    <div style={{ fontSize: 26, fontWeight: 800, marginBottom: 12 }}>
-                      {currentReviewItem.en || currentReviewItem.zh || currentReviewItem.vi}
-                    </div>
-
-                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 16 }}>
-                      {!!currentReviewItem.en && (
-                        <button
-                          onClick={() => speakText(currentReviewItem.en, "en-US")}
-                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                        >
-                          🔊 EN
-                        </button>
-                      )}
-
-                      {!!currentReviewItem.zh && (
-                        <button
-                          onClick={() => speakText(currentReviewItem.zh, "zh-CN")}
-                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                        >
-                          🔊 ZH
-                        </button>
-                      )}
-
-                      <button
-                        onClick={() => setReviewShowAnswer((v) => !v)}
-                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                      >
-                        {reviewShowAnswer ? "Ẩn đáp án" : "Hiện đáp án"}
-                      </button>
-                    </div>
-
-                    {reviewShowAnswer && (
-                      <div
-                        style={{
-                          padding: 14,
-                          borderRadius: 12,
-                          background: "#f8fafc",
-                          border: "1px solid #e2e8f0",
-                          lineHeight: 1.8,
-                          marginBottom: 16,
-                        }}
-                      >
-                        {currentReviewItem.en && <div><b>EN:</b> {currentReviewItem.en}</div>}
-                        {currentReviewItem.zh && <div><b>ZH:</b> {currentReviewItem.zh}</div>}
-                        {currentReviewItem.pinyin && <div><b>Pinyin:</b> {currentReviewItem.pinyin}</div>}
-                        {currentReviewItem.vi && <div><b>VI:</b> {currentReviewItem.vi}</div>}
-                      </div>
-                    )}
-
-                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                      <button
-                        onClick={() => handleReviewAnswer(true)}
-                        style={{ ...styles.tabButton, color: "#ffffff", background: "#16a34a" }}
-                      >
-                        Đã nhớ
-                      </button>
-
-                      <button
-                        onClick={() => handleReviewAnswer(false)}
-                        style={{ ...styles.tabButton, color: "#ffffff", background: "#dc2626" }}
-                      >
-                        Chưa nhớ
-                      </button>
-
-                      <button
-                        onClick={stopReviewSession}
-                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                      >
-                        Thoát
-                      </button>
-                    </div>
-
-                    <div style={{ marginTop: 16, color: "#475569", lineHeight: 1.8 }}>
-                      <div>✅ Đã nhớ: {reviewKnown}</div>
-                      <div>❌ Chưa nhớ: {reviewUnknown}</div>
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div style={styles.gridCards}>
-                {reviewItems.map((item, idx) => (
-                  <div key={item._reviewId || idx} style={styles.wordCard}>
-                    {item.en && <div><b>EN:</b> {item.en}</div>}
-                    {item.zh && <div><b>ZH:</b> {item.zh}</div>}
-                    {item.pinyin && <div><b>Pinyin:</b> {item.pinyin}</div>}
-                    {item.vi && <div><b>VI:</b> {item.vi}</div>}
-
-                    <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
-                      {!!item.en && (
-                        <button
-                          onClick={() => speakText(item.en, "en-US")}
-                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                        >
-                          🔊 EN
-                        </button>
-                      )}
-
-                      {!!item.zh && (
-                        <button
-                          onClick={() => speakText(item.zh, "zh-CN")}
-                          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                        >
-                          🔊 ZH
-                        </button>
-                      )}
-
-                      <button
-                        onClick={() =>
-                          setReviewItems((prev) =>
-                            prev.filter((x) => x._reviewId !== item._reviewId)
-                          )
-                        }
-                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                      >
-                        Xóa
-                      </button>
-                    </div>
-                  </div>
-                ))}
+            {reviewShowAnswer && (
+              <div
+                style={{
+                  padding: 14,
+                  borderRadius: 12,
+                  background: "#f8fafc",
+                  border: "1px solid #e2e8f0",
+                  lineHeight: 1.8,
+                  marginBottom: 16,
+                }}
+              >
+                {currentReviewItem.en && <div><b>EN:</b> {currentReviewItem.en}</div>}
+                {currentReviewItem.zh && <div><b>ZH:</b> {currentReviewItem.zh}</div>}
+                {currentReviewItem.pinyin && <div><b>Pinyin:</b> {currentReviewItem.pinyin}</div>}
+                {currentReviewItem.vi && <div><b>VI:</b> {currentReviewItem.vi}</div>}
               </div>
             )}
-          </div>
+
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <button
+                onClick={() => handleReviewAnswer(true)}
+                style={{ ...styles.tabButton, color: "#ffffff", background: "#16a34a" }}
+              >
+                Đã nhớ
+              </button>
+
+              <button
+                onClick={() => handleReviewAnswer(false)}
+                style={{ ...styles.tabButton, color: "#ffffff", background: "#dc2626" }}
+              >
+                Chưa nhớ
+              </button>
+
+              <button
+                onClick={stopReviewSession}
+                style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+              >
+                Thoát
+              </button>
+            </div>
+
+            <div style={{ marginTop: 16, color: "#475569", lineHeight: 1.8 }}>
+              <div>✅ Đã nhớ: {reviewKnown}</div>
+              <div>❌ Chưa nhớ: {reviewUnknown}</div>
+            </div>
+          </>
         )}
+      </div>
+    ) : (
+      <div style={styles.gridCards}>
+        {reviewItems.map((item, idx) => (
+          <div key={item._reviewId || idx} style={styles.wordCard}>
+            {item.en && <div><b>EN:</b> {item.en}</div>}
+            {item.zh && <div><b>ZH:</b> {item.zh}</div>}
+            {item.pinyin && <div><b>Pinyin:</b> {item.pinyin}</div>}
+            {item.vi && <div><b>VI:</b> {item.vi}</div>}
+
+            <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {!!item.en && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    unlockSpeech();
+                    speakText(item.en, "en-US");
+                  }}
+                  style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                >
+                  🔊 EN
+                </button>
+              )}
+
+              {!!item.zh && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    unlockSpeech();
+                    speakText(item.zh, "zh-CN");
+                  }}
+                  style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+                >
+                  🔊 ZH
+                </button>
+              )}
+
+              <button
+                onClick={() =>
+                  setReviewItems((prev) =>
+                    prev.filter((x) => x._reviewId !== item._reviewId)
+                  )
+                }
+                style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
+              >
+                Xóa
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+)}
 {mainTab === "roadmap" && (
           <div style={styles.mainPanel}>
             <h2 style={{ marginTop: 0 }}>Lộ trình nâng thành bản PRO hoàn chỉnh</h2>
