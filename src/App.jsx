@@ -475,56 +475,28 @@ function speakText(text, lang = "en-US") {
   const safeText = String(text).trim();
   if (!safeText) return;
 
-  const speakNow = () => {
-    try {
-      synth.cancel();
+  try {
+    synth.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(safeText);
-      utterance.lang = lang;
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      utterance.volume = 1;
+    const utterance = new SpeechSynthesisUtterance(safeText);
+    utterance.lang = lang;
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    utterance.volume = 1;
 
-      const voice = getMobileFriendlyVoice(lang);
-      if (voice) utterance.voice = voice;
+    const voice = getMobileFriendlyVoice(lang);
+    if (voice) utterance.voice = voice;
 
-      utterance.onerror = (e) => {
-        console.log("speech error:", e);
-      };
+    utterance.onerror = (e) => {
+      console.log("speech error:", e);
+    };
 
+    setTimeout(() => {
       synth.speak(utterance);
-    } catch (err) {
-      console.log("speakText error:", err);
-    }
-  };
-
-  const voices = synth.getVoices();
-
-  if (voices && voices.length > 0) {
-    speakNow();
-    return;
+    }, 50);
+  } catch (err) {
+    console.log("speakText error:", err);
   }
-
-  let hasSpoken = false;
-
-  const handleVoicesReady = () => {
-    if (hasSpoken) return;
-    hasSpoken = true;
-    speakNow();
-  };
-
-  if (typeof synth.addEventListener === "function") {
-    synth.addEventListener("voiceschanged", handleVoicesReady, { once: true });
-  } else {
-    synth.onvoiceschanged = handleVoicesReady;
-  }
-
-  setTimeout(() => {
-    if (!hasSpoken) {
-      hasSpoken = true;
-      speakNow();
-    }
-  }, 300);
 }
 
 function speakSequence(texts = [], lang = "en-US") {
@@ -1095,28 +1067,38 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                     <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                       <div><b>EN:</b> {randomWord.en}</div>
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          speakText(randomWord.en, "en-US");
-                        }}
-                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                      >
-                        🔊 EN
-                      </button>
-                    </div>
+  type="button"
+  onTouchStart={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakText(randomWord.en, "en-US");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 EN
+</button>      
+              </div>
 
                     <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginTop: 8 }}>
                       <div style={styles.zh}><b>ZH:</b> {randomWord.zh}</div>
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          speakText(randomWord.zh, "zh-CN");
-                        }}
-                        style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-                      >
-                        🔊 ZH
-                      </button>
-                    </div>
+  type="button"
+  onTouchStart={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakText(randomWord.zh, "zh-CN");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 ZH
+</button> 
+                   </div>
 
                     {showAnswer && (
                       <>
@@ -1165,14 +1147,19 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
           <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
             <div><b>EN:</b> {word.en}</div>
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                speakText(word.en, "en-US");
-              }}
-              style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-            >
-              🔊 EN
-            </button>
+  type="button"
+  onTouchStart={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakText(word.en, "en-US");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 EN
+</button>
           </div>
 
           <button
@@ -1189,14 +1176,19 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginTop: 8 }}>
           <div style={styles.zh}><b>ZH:</b> {word.zh}</div>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              speakText(word.zh, "zh-CN");
-            }}
-            style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-          >
-            🔊 ZH
-          </button>
+  type="button"
+  onTouchStart={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakText(word.zh, "zh-CN");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 ZH
+</button>
         </div>
 
         {isOpen && (
@@ -1291,17 +1283,33 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
       <div><b>EN:</b> {item.en}</div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         <button
-          onClick={() => speakText(item.en, "en-US")}
-          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-        >
-          🔊 EN
-        </button>
+  type="button"
+  onTouchStart={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakText(item.en, "en-US");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 EN
+</button>
         <button
-          onClick={() => speakText(item.zh, "zh-CN")}
-          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-        >
-          🔊 ZH
-        </button>
+  type="button"
+  onTouchStart={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakText(item.zh, "zh-CN");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 ZH
+</button>
       </div>
     </div>
 
@@ -1349,18 +1357,34 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
     <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
       <div><b>EN:</b> {item.en}</div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <button
-          onClick={() => speakText(item.en, "en-US")}
-          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-        >
-          🔊 EN
-        </button>
-        <button
-          onClick={() => speakText(item.zh, "zh-CN")}
-          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-        >
-          🔊 ZH
-        </button>
+       <button
+  type="button"
+  onTouchStart={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakText(item.en, "en-US");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 EN
+</button>
+       <button
+  type="button"
+  onTouchStart={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakText(item.zh, "zh-CN");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 ZH
+</button>
       </div>
     </div>
 
@@ -1407,18 +1431,28 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
       </div>
 
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+       <button
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakSequence([item.en1, item.en2], "en-US");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 EN
+</button>
         <button
-          onClick={() => speakSequence([item.en1, item.en2], "en-US")}
-          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-        >
-          🔊 EN
-        </button>
-        <button
-          onClick={() => speakSequence([item.zh1, item.zh2], "zh-CN")}
-          style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
-        >
-          🔊 ZH
-        </button>
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    speakSequence([item.zh1, item.zh2], "zh-CN");
+  }}
+  style={styles.audioBtn}
+>
+  🔊 ZH
+</button>
       </div>
     </div>
 

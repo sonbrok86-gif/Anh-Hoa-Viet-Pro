@@ -13,7 +13,7 @@ export const styles = {
   hero: {
     background: "linear-gradient(135deg, #ffffff, #eef4ff)",
     borderRadius: 28,
-    padding: 24,
+    padding: "clamp(16px, 4vw, 24px)",
     boxShadow: "0 8px 24px rgba(15,23,42,0.08)",
     display: "grid",
     gap: 20,
@@ -28,16 +28,19 @@ export const styles = {
     fontSize: 12,
     marginBottom: 12,
   },
-  title: {
-    margin: 0,
-    fontSize: 38,
-  },
-  subtitle: {
-    marginTop: 10,
-    lineHeight: 1.7,
-    color: "#475569",
-    maxWidth: 900,
-  },
+ title: {
+  margin: 0,
+  fontSize: "clamp(24px, 5vw, 38px)",
+  lineHeight: 1.3,
+  wordBreak: "break-word",
+},
+ subtitle: {
+  marginTop: 10,
+  lineHeight: 1.7,
+  color: "#475569",
+  maxWidth: 900,
+  fontSize: "clamp(14px, 3vw, 18px)",
+},
   statRow: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
@@ -65,25 +68,43 @@ export const styles = {
     flexWrap: "wrap",
     margin: "20px 0",
   },
-  tabButton: {
+    tabButton: {
     border: "none",
     background: "#fff",
-color: "#1e293b",
+    color: "#1e293b",
     borderRadius: 14,
     padding: "12px 16px",
     cursor: "pointer",
     fontWeight: 700,
     boxShadow: "0 4px 12px rgba(15,23,42,0.05)",
   },
+
+  audioBtn: {
+    border: "none",
+    background: "#fff",
+    color: "#1e293b",
+    borderRadius: 14,
+    padding: "12px 16px",
+    cursor: "pointer",
+    fontWeight: 700,
+    boxShadow: "0 4px 12px rgba(15,23,42,0.05)",
+    position: "relative",
+    zIndex: 5,
+    minWidth: 44,
+    minHeight: 44,
+    touchAction: "manipulation",
+    WebkitTapHighlightColor: "transparent",
+  },
+
   tabButtonActive: {
     background: "#2563eb",
     color: "#fff",
   },
-  twoCol: {
-    display: "grid",
-    gridTemplateColumns: "300px 1fr",
-    gap: 20,
-  },
+twoCol: {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
+  gap: 20,
+},
   sidePanel: {
     background: "#fff",
     borderRadius: 22,
