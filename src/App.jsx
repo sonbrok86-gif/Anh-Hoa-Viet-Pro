@@ -4,7 +4,7 @@ import { irregularVerbs } from "./data/verbs";
 import { grammar_full } from "./data/grammar_full";
 import { grammar_advanced } from "./data/grammar_advanced";
 import { grammar_full_pro } from "./data/grammar_full_pro";
-import { styles } from "./styles/appStyles";
+import { styles } from "./styles/appstyles";
 import { antonyms_full_1 } from "./data/antonyms_full_1";
 import { antonyms_full_2 } from "./data/antonyms_full_2";
 import { antonyms_full_3 } from "./data/antonyms_full_3";
@@ -284,6 +284,23 @@ useEffect(() => {
 useEffect(() => {
   localStorage.setItem("isPro", JSON.stringify(isPro));
 }, [isPro]);
+useEffect(() => {
+  if (typeof window === "undefined") return;
+  if (!("speechSynthesis" in window)) return;
+
+  const synth = window.speechSynthesis;
+
+  const loadVoices = () => {
+    synth.getVoices();
+  };
+
+  loadVoices();
+
+  if (typeof synth.addEventListener === "function") {
+    synth.addEventListener("voiceschanged", loadVoices);
+    return () => synth.removeEventListener("voiceschanged", loadVoices);
+  }
+}, []);
 
   function pickRandomWord() {
     if (!selectedTopic.words.length) return;
@@ -434,44 +451,153 @@ function resetGrammarExam() {
   setGrammarQuizUsedIds([]);
   generateGrammarQuiz();
 }
-  function speakText(text, lang = "en-US") {
-    if (!window.speechSynthesis || !text) return;
+  function getMobileFriendlyVoice(lang = "en-US") {
+  if (!window.speechSynthesis) return null;
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    utterance.rate = 0.9;
-    utterance.pitch = 1;
+  const voices = window.speechSynthesis.getVoices() || [];
+  if (!voices.length) return null;
 
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
+  const langLower = lang.toLowerCase();
+  const shortLang = langLower.split("-")[0];
+
+  return (
+    voices.find((v) => v.lang?.toLowerCase() === langLower) ||
+    voices.find((v) => v.lang?.toLowerCase().startsWith(shortLang)) ||
+    null
+  );
+}
+
+function speakText(text, lang = "en-US") {
+  if (typeof window === "undefined") return;
+  if (!text || !("speechSynthesis" in window)) return;
+
+  const synth = window.speechSynthesis;
+  const safeText = String(text).trim();
+  if (!safeText) return;
+
+  const speakNow = () => {
+    try {
+      synth.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(safeText);
+      utterance.lang = lang;
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      const voice = getMobileFriendlyVoice(lang);
+      if (voice) utterance.voice = voice;
+
+      utterance.onerror = (e) => {
+        console.log("speech error:", e);
+      };
+
+      synth.speak(utterance);
+    } catch (err) {
+      console.log("speakText error:", err);
+    }
+  };
+
+  const voices = synth.getVoices();
+
+  if (voices && voices.length > 0) {
+    speakNow();
+    return;
   }
-function speakSequence(texts = [], lang = "en-US") {
-  if (!window.speechSynthesis) return;
 
-  const cleaned = texts.filter(Boolean);
+  let hasSpoken = false;
+
+  const handleVoicesReady = () => {
+    if (hasSpoken) return;
+    hasSpoken = true;
+    speakNow();
+  };
+
+  if (typeof synth.addEventListener === "function") {
+    synth.addEventListener("voiceschanged", handleVoicesReady, { once: true });
+  } else {
+    synth.onvoiceschanged = handleVoicesReady;
+  }
+
+  setTimeout(() => {
+    if (!hasSpoken) {
+      hasSpoken = true;
+      speakNow();
+    }
+  }, 300);
+}
+
+function speakSequence(texts = [], lang = "en-US") {
+  if (typeof window === "undefined") return;
+  if (!("speechSynthesis" in window)) return;
+
+  const cleaned = texts
+    .map((t) => String(t || "").trim())
+    .filter(Boolean);
+
   if (!cleaned.length) return;
 
-  window.speechSynthesis.cancel();
+  const synth = window.speechSynthesis;
 
-  let index = 0;
-
-  function speakNext() {
+  const speakAtIndex = (index) => {
     if (index >= cleaned.length) return;
 
-    const utterance = new SpeechSynthesisUtterance(cleaned[index]);
-    utterance.lang = lang;
-    utterance.rate = 0.9;
-    utterance.pitch = 1;
+    try {
+      const utterance = new SpeechSynthesisUtterance(cleaned[index]);
+      utterance.lang = lang;
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.volume = 1;
 
-    utterance.onend = () => {
-      index++;
-      speakNext();
-    };
+      const voice = getMobileFriendlyVoice(lang);
+      if (voice) utterance.voice = voice;
 
-    window.speechSynthesis.speak(utterance);
+      utterance.onend = () => {
+        setTimeout(() => speakAtIndex(index + 1), 120);
+      };
+
+      utterance.onerror = (e) => {
+        console.log("speech sequence error:", e);
+      };
+
+      synth.speak(utterance);
+    } catch (err) {
+      console.log("speakSequence error:", err);
+    }
+  };
+
+  const startSpeaking = () => {
+    synth.cancel();
+    speakAtIndex(0);
+  };
+
+  const voices = synth.getVoices();
+
+  if (voices && voices.length > 0) {
+    startSpeaking();
+    return;
   }
 
-  speakNext();
+  let started = false;
+
+  const handleVoicesReady = () => {
+    if (started) return;
+    started = true;
+    startSpeaking();
+  };
+
+  if (typeof synth.addEventListener === "function") {
+    synth.addEventListener("voiceschanged", handleVoicesReady, { once: true });
+  } else {
+    synth.onvoiceschanged = handleVoicesReady;
+  }
+
+  setTimeout(() => {
+    if (!started) {
+      started = true;
+      startSpeaking();
+    }
+  }, 300);
 }
   function generateListeningQuiz(mode = listeningMode) {
     const words = selectedTopic.words;
