@@ -451,170 +451,120 @@ function resetGrammarExam() {
   setGrammarQuizUsedIds([]);
   generateGrammarQuiz();
 }
-  function getMobileFriendlyVoice(lang = "en-US") {
+ function getMobileFriendlyVoice(lang = "en-US") {
   if (!window.speechSynthesis) return null;
 
-  const voices = window.speechSynthesis.getVoices() || [];
+  const voices = window.speechSynthesis.getVoices();
+
   if (!voices.length) return null;
 
   const langLower = lang.toLowerCase();
-  const shortLang = langLower.split("-")[0];
 
   return (
-    voices.find((v) => v.lang?.toLowerCase() === langLower) ||
-    voices.find((v) => v.lang?.toLowerCase().startsWith(shortLang)) ||
+    voices.find(v => v.lang.toLowerCase() === langLower) ||
+    voices.find(v => v.lang.toLowerCase().includes(langLower.split("-")[0])) ||
     null
   );
 }
+
 function unlockSpeech() {
   if (typeof window === "undefined") return;
   if (!("speechSynthesis" in window)) return;
 
   try {
     const synth = window.speechSynthesis;
-    const warmup = new SpeechSynthesisUtterance(" ");
-    warmup.volume = 0;
-    synth.speak(warmup);
+
     synth.cancel();
+
+    const warmup = new SpeechSynthesisUtterance(".");
+    warmup.volume = 0;
+    warmup.rate = 1;
+    warmup.pitch = 1;
+
+    synth.speak(warmup);
+
   } catch (err) {
-    console.log("unlockSpeech error:", err);
+    console.log("unlock speech error", err);
   }
 }
 
 function speakText(text, lang = "en-US") {
-  if (typeof window === "undefined") return;
-  if (!text || !("speechSynthesis" in window)) return;
+  if (!text) return;
+  if (!window.speechSynthesis) return;
 
-  const synth = window.speechSynthesis;
-  const safeText = String(text).trim();
-  if (!safeText) return;
+  try {
+    const synth = window.speechSynthesis;
 
-  const speakNow = () => {
-    try {
-      synth.cancel();
+    synth.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(safeText);
-      utterance.lang = lang;
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      utterance.volume = 1;
+    const utterance = new SpeechSynthesisUtterance(text);
 
-      const voice = getMobileFriendlyVoice(lang);
-      if (voice) utterance.voice = voice;
+    utterance.lang = lang;
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    utterance.volume = 1;
 
-      utterance.onerror = (e) => {
-        console.log("speech error:", e);
-      };
+    const voice = getMobileFriendlyVoice(lang);
 
-      synth.speak(utterance);
-    } catch (err) {
-      console.log("speakText error:", err);
-    }
-  };
+    if (voice) utterance.voice = voice;
 
-  const voices = synth.getVoices();
+    synth.speak(utterance);
 
-  if (voices && voices.length > 0) {
-    speakNow();
-    return;
+  } catch (err) {
+    console.log("speech error", err);
   }
-
-  let hasSpoken = false;
-
-  const handleVoicesReady = () => {
-    if (hasSpoken) return;
-    hasSpoken = true;
-    speakNow();
-  };
-
-  if (typeof synth.addEventListener === "function") {
-    synth.addEventListener("voiceschanged", handleVoicesReady, { once: true });
-  } else {
-    synth.onvoiceschanged = handleVoicesReady;
-  }
-
-  setTimeout(() => {
-    if (!hasSpoken) {
-      hasSpoken = true;
-      speakNow();
-    }
-  }, 300);
 }
+
 function speakSequence(texts = [], lang = "en-US") {
-  if (typeof window === "undefined") return;
-  if (!("speechSynthesis" in window)) return;
+  if (!texts.length) return;
 
-  const cleaned = texts
-    .map((t) => String(t || "").trim())
-    .filter(Boolean);
+  let index = 0;
 
-  if (!cleaned.length) return;
+  function speakNext() {
+    if (index >= texts.length) return;
 
-  const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(texts[index]);
 
-  const speakAtIndex = (index) => {
-    if (index >= cleaned.length) return;
+    utterance.lang = lang;
+    utterance.rate = 0.9;
 
-    try {
-      const utterance = new SpeechSynthesisUtterance(cleaned[index]);
-      utterance.lang = lang;
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      utterance.volume = 1;
+    const voice = getMobileFriendlyVoice(lang);
 
-      const voice = getMobileFriendlyVoice(lang);
-      if (voice) utterance.voice = voice;
+    if (voice) utterance.voice = voice;
 
-      utterance.onend = () => {
-        setTimeout(() => speakAtIndex(index + 1), 180);
-      };
+    utterance.onend = () => {
+      index++;
+      setTimeout(speakNext, 200);
+    };
 
-      utterance.onerror = (e) => {
-        console.log("speech sequence error:", e);
-      };
-
-      synth.speak(utterance);
-    } catch (err) {
-      console.log("speakSequence error:", err);
-    }
-  };
-
-  const startSpeaking = () => {
-    try {
-      synth.cancel();
-      speakAtIndex(0);
-    } catch (err) {
-      console.log("startSpeaking error:", err);
-    }
-  };
-
-  const voices = synth.getVoices();
-
-  if (voices && voices.length > 0) {
-    startSpeaking();
-    return;
+    window.speechSynthesis.speak(utterance);
   }
 
-  let started = false;
+  window.speechSynthesis.cancel();
 
-  const handleVoicesReady = () => {
-    if (started) return;
-    started = true;
-    startSpeaking();
-  };
+  speakNext();
+}
 
-  if (typeof synth.addEventListener === "function") {
-    synth.addEventListener("voiceschanged", handleVoicesReady, { once: true });
-  } else {
-    synth.onvoiceschanged = handleVoicesReady;
-  }
+function handleSpeak(e, text, lang = "en-US") {
+  e.preventDefault();
+  e.stopPropagation();
+
+  unlockSpeech();
 
   setTimeout(() => {
-    if (!started) {
-      started = true;
-      startSpeaking();
-    }
-  }, 300);
+    speakText(text, lang);
+  }, 120);
+}
+
+function handleSpeakSequence(e, texts, lang = "en-US") {
+  e.preventDefault();
+  e.stopPropagation();
+
+  unlockSpeech();
+
+  setTimeout(() => {
+    speakSequence(texts, lang);
+  }, 120);
 }
   function generateListeningQuiz(mode = listeningMode) {
     const words = selectedTopic.words;
@@ -1113,11 +1063,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                       <div><b>EN:</b> {randomWord.en}</div>
                       <button
   type="button"
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    speakText(randomWord.en, "en-US");
-  }}
+onClick={(e) => handleSpeak(e, randomWord.en, "en-US")}
+onTouchEnd={(e) => handleSpeak(e, randomWord.en, "en-US")}
   style={styles.audioBtn}
 >
   🔊 EN
@@ -1128,11 +1075,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                       <div style={styles.zh}><b>ZH:</b> {randomWord.zh}</div>
                      <button
   type="button"
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    speakText(randomWord.zh, "zh-CN");
-  }}
+ onClick={(e) => handleSpeak(e, randomWord.zh, "zh-CN")}
+onTouchEnd={(e) => handleSpeak(e, randomWord.zh, "zh-CN")}
   style={styles.audioBtn}
 >
   🔊 ZH
@@ -1169,11 +1113,21 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
     const isFav = favoriteIds.includes(favId);
 
     return (
-      <div
-        key={idx}
-        style={{ ...styles.wordCard, cursor: "pointer" }}
-        onClick={() => setOpenWordIndex(isOpen ? null : cardId)}
-      >
+     <div
+  key={idx}
+  style={styles.wordCard}
+>
+<button
+  onClick={() => setOpenWordIndex(isOpen ? null : cardId)}
+  style={{
+    ...styles.tabButton,
+    marginTop: 10,
+    color: "#1e293b",
+    background: "#ffffff"
+  }}
+>
+  {isOpen ? "Thu gọn" : "Mở"}
+</button>
         <div
           style={{
             display: "flex",
@@ -1190,11 +1144,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
   onTouchStart={(e) => {
     e.stopPropagation();
   }}
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    speakText(word.en, "en-US");
-  }}
+  onClick={(e) => handleSpeak(e, word.en, "en-US")}
+onTouchEnd={(e) => handleSpeak(e, word.en, "en-US")}
   style={styles.audioBtn}
 >
   🔊 EN
@@ -1219,11 +1170,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
   onTouchStart={(e) => {
     e.stopPropagation();
   }}
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    speakText(word.zh, "zh-CN");
-  }}
+ onClick={(e) => handleSpeak(e, word.zh, "zh-CN")}
+onTouchEnd={(e) => handleSpeak(e, word.zh, "zh-CN")}
   style={styles.audioBtn}
 >
   🔊 ZH
@@ -1319,27 +1267,18 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
     <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
       <div><b>EN:</b> {item.en}</div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-  <button
+<button
   type="button"
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    speakText(item.en, "en-US");
-  }}
+  onClick={(e) => handleSpeak(e, item.en, "en-US")}
+  onTouchEnd={(e) => handleSpeak(e, item.en, "en-US")}
   style={styles.audioBtn}
 >
   🔊 EN
 </button>
-        <button
+       <button
   type="button"
-  onTouchStart={(e) => {
-    e.stopPropagation();
-  }}
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    speakText(item.zh, "zh-CN");
-  }}
+  onClick={(e) => handleSpeak(e, item.zh, "zh-CN")}
+  onTouchEnd={(e) => handleSpeak(e, item.zh, "zh-CN")}
   style={styles.audioBtn}
 >
   🔊 ZH
@@ -1391,24 +1330,18 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
     <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
       <div><b>EN:</b> {item.en}</div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-  <button
+ <button
   type="button"
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    speakText(item.en, "en-US");
-  }}
+  onClick={(e) => handleSpeak(e, item.en, "en-US")}
+  onTouchEnd={(e) => handleSpeak(e, item.en, "en-US")}
   style={styles.audioBtn}
 >
   🔊 EN
 </button>
-     <button
+    <button
   type="button"
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    speakText(item.zh, "zh-CN");
-  }}
+  onClick={(e) => handleSpeak(e, item.zh, "zh-CN")}
+  onTouchEnd={(e) => handleSpeak(e, item.zh, "zh-CN")}
   style={styles.audioBtn}
 >
   🔊 ZH
@@ -1461,12 +1394,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
  <button
   type="button"
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    unlockSpeech();
-    speakSequence([item.en1, item.en2], "en-US");
-  }}
+  onClick={(e) => handleSpeakSequence(e,[item.en1,item.en2],"en-US")}
+onTouchEnd={(e) => handleSpeakSequence(e,[item.en1,item.en2],"en-US")}
   style={styles.audioBtn}
 >
   🔊 EN
@@ -1474,12 +1403,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
 
 <button
   type="button"
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    unlockSpeech();
-    speakSequence([item.zh1, item.zh2], "zh-CN");
-  }}
+  onClick={(e) => handleSpeakSequence(e, [item.zh1, item.zh2], "zh-CN")}
+  onTouchEnd={(e) => handleSpeakSequence(e, [item.zh1, item.zh2], "zh-CN")}
   style={styles.audioBtn}
 >
   🔊 ZH
@@ -1925,7 +1850,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
 
                     {(quizMode === "en-vi" || quizMode === "vi-en") && (
                       <button
-                        onClick={() => speakText(quizWord.en, "en-US")}
+                       onClick={(e) => handleSpeak(e, quizWord.en, "en-US")}
+onTouchEnd={(e) => handleSpeak(e, quizWord.en, "en-US")}
                         style={{
                           ...styles.tabButton,
                           color: "#1e293b",
@@ -1950,7 +1876,8 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                     <div style={{ fontSize: 20 }}>{quizWord.zh}</div>
 
                     <button
-                      onClick={() => speakText(quizWord.zh, "zh-CN")}
+                     onClick={(e) => handleSpeak(e, quizWord.zh, "zh-CN")}
+onTouchEnd={(e) => handleSpeak(e, quizWord.zh, "zh-CN")}
                       style={{
                         ...styles.tabButton,
                         color: "#1e293b",
@@ -2104,13 +2031,17 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
                  <button
   type="button"
   onClick={(e) => {
-    e.preventDefault();
-    unlockSpeech();
-
     if (listeningMode === "en-vi" || listeningMode === "vi-en") {
-      speakText(listeningWord.en, "en-US");
+      handleSpeak(e, listeningWord.en, "en-US");
     } else if (listeningMode === "zh-vi") {
-      speakText(listeningWord.zh, "zh-CN");
+      handleSpeak(e, listeningWord.zh, "zh-CN");
+    }
+  }}
+  onTouchEnd={(e) => {
+    if (listeningMode === "en-vi" || listeningMode === "vi-en") {
+      handleSpeak(e, listeningWord.en, "en-US");
+    } else if (listeningMode === "zh-vi") {
+      handleSpeak(e, listeningWord.zh, "zh-CN");
     }
   }}
   style={{
@@ -2486,24 +2417,16 @@ const lifePaged = paginate(allLifeLessons, lifePage, 1);
 
                     <div style={{ marginTop: 10, display: "flex", gap: 10, flexWrap: "wrap" }}>
                       <button
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    unlockSpeech();
-    speakText(word.en, "en-US");
-  }}
+ onClick={(e) => handleSpeak(e, word.en, "en-US")}
+onTouchEnd={(e) => handleSpeak(e, word.en, "en-US")}
   style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
 >
   🔊 EN
 </button>
 
                      <button
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    unlockSpeech();
-    speakText(word.zh, "zh-CN");
-  }}
+  onClick={(e) => handleSpeak(e, word.zh, "zh-CN")}
+onTouchEnd={(e) => handleSpeak(e, word.zh, "zh-CN")}
   style={{ ...styles.tabButton, color: "#1e293b", background: "#ffffff" }}
 >
   🔊 ZH
