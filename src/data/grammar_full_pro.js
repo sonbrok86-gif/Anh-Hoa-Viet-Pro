@@ -7,8 +7,6 @@ export const grammar_full_pro = [
     formula: "S + V(s/es) + O",
     use: "Diễn tả thói quen, sự thật hiển nhiên, lịch trình.",
     example: "She works in a factory.",
-    zh: "她在工厂工作。",
-    pinyin: "Tā zài gōngchǎng gōngzuò.",
     vi: "Cô ấy làm việc trong nhà máy."
   },
   {
@@ -19,8 +17,6 @@ export const grammar_full_pro = [
     formula: "S + am/is/are + V-ing + O",
     use: "Diễn tả hành động đang xảy ra ngay lúc nói.",
     example: "I am studying English now.",
-    zh: "我现在正在学习英语。",
-    pinyin: "Wǒ xiànzài zhèngzài xuéxí Yīngyǔ.",
     vi: "Tôi đang học tiếng Anh bây giờ."
   },
   {
@@ -31,8 +27,6 @@ export const grammar_full_pro = [
     formula: "S + V2/ed + O",
     use: "Diễn tả hành động đã xảy ra và kết thúc trong quá khứ.",
     example: "We visited the supplier yesterday.",
-    zh: "我们昨天拜访了供应商。",
-    pinyin: "Wǒmen zuótiān bàifǎng le gōngyìngshāng.",
     vi: "Chúng tôi đã thăm nhà cung cấp hôm qua."
   },
   {
@@ -43,8 +37,6 @@ export const grammar_full_pro = [
     formula: "S + was/were + V-ing + O",
     use: "Diễn tả hành động đang diễn ra tại một thời điểm trong quá khứ.",
     example: "They were loading the goods at 8 p.m.",
-    zh: "他们晚上八点正在装货。",
-    pinyin: "Tāmen wǎnshang bā diǎn zhèngzài zhuānghuò.",
     vi: "Họ đang chất hàng lúc 8 giờ tối."
   },
   {
@@ -55,8 +47,6 @@ export const grammar_full_pro = [
     formula: "S + have/has + V3 + O",
     use: "Diễn tả kinh nghiệm, kết quả, hành động vừa xảy ra hoặc kéo dài đến hiện tại.",
     example: "I have finished the report.",
-    zh: "我已经完成报告了。",
-    pinyin: "Wǒ yǐjīng wánchéng bàogào le.",
     vi: "Tôi đã hoàn thành báo cáo."
   },
   {
@@ -67,8 +57,6 @@ export const grammar_full_pro = [
     formula: "S + have/has been + V-ing + O",
     use: "Diễn tả hành động bắt đầu trong quá khứ và vẫn tiếp tục đến hiện tại.",
     example: "She has been learning Chinese for two years.",
-    zh: "她学中文已经两年了。",
-    pinyin: "Tā xué Zhōngwén yǐjīng liǎng nián le.",
     vi: "Cô ấy đã học tiếng Trung được hai năm."
   },
   {
@@ -79,8 +67,6 @@ export const grammar_full_pro = [
     formula: "S + had + V3 + O",
     use: "Diễn tả hành động xảy ra trước một hành động khác trong quá khứ.",
     example: "The truck had left before we arrived.",
-    zh: "我们到达之前，卡车已经离开了。",
-    pinyin: "Wǒmen dàodá zhīqián, kǎchē yǐjīng líkāi le.",
     vi: "Xe tải đã rời đi trước khi chúng tôi đến."
   },
   {
@@ -91,8 +77,6 @@ export const grammar_full_pro = [
     formula: "S + had been + V-ing + O",
     use: "Diễn tả hành động đã kéo dài trước một thời điểm trong quá khứ.",
     example: "He had been working for five hours before lunch.",
-    zh: "午饭前他已经工作了五个小时。",
-    pinyin: "Wǔfàn qián tā yǐjīng gōngzuò le wǔ gè xiǎoshí.",
     vi: "Anh ấy đã làm việc 5 tiếng trước bữa trưa."
   },
   {
@@ -103,8 +87,6 @@ export const grammar_full_pro = [
     formula: "S + will + V + O",
     use: "Diễn tả quyết định tức thời, dự đoán, lời hứa.",
     example: "I will call the customer later.",
-    zh: "我晚一点会给客户打电话。",
-    pinyin: "Wǒ wǎn yìdiǎn huì gěi kèhù dǎ diànhuà.",
     vi: "Tôi sẽ gọi khách hàng sau."
   },
   {
@@ -115,8 +97,6 @@ export const grammar_full_pro = [
     formula: "S + am/is/are going to + V + O",
     use: "Diễn tả kế hoạch hoặc dự định đã có từ trước.",
     example: "We are going to expand production next month.",
-    zh: "我们下个月打算扩大生产。",
-    pinyin: "Wǒmen xià gè yuè dǎsuàn kuòdà shēngchǎn.",
     vi: "Chúng tôi dự định mở rộng sản xuất vào tháng tới."
   },
   {
@@ -127,8 +107,6 @@ export const grammar_full_pro = [
     formula: "S + will be + V-ing + O",
     use: "Diễn tả hành động sẽ đang diễn ra tại một thời điểm trong tương lai.",
     example: "At 10 a.m., I will be meeting the partner.",
-    zh: "上午十点我将正在见合作伙伴。",
-    pinyin: "Shàngwǔ shí diǎn wǒ jiāng zhèngzài jiàn hézuò huǒbàn.",
     vi: "Lúc 10 giờ sáng tôi sẽ đang gặp đối tác."
   },
   {
@@ -139,8 +117,6 @@ export const grammar_full_pro = [
     formula: "S + will have + V3 + O",
     use: "Diễn tả hành động sẽ hoàn thành trước một thời điểm trong tương lai.",
     example: "By next week, we will have completed the order.",
-    zh: "到下周，我们将完成订单。",
-    pinyin: "Dào xià zhōu, wǒmen jiāng wánchéng dìngdān.",
     vi: "Đến tuần sau, chúng tôi sẽ hoàn thành đơn hàng."
   },
 
@@ -152,8 +128,6 @@ export const grammar_full_pro = [
     formula: "S + can/cannot + V + O",
     use: "Diễn tả khả năng hoặc sự cho phép.",
     example: "She can speak English and Chinese.",
-    zh: "她会说英语和中文。",
-    pinyin: "Tā huì shuō Yīngyǔ hé Zhōngwén.",
     vi: "Cô ấy có thể nói tiếng Anh và tiếng Trung."
   },
   {
@@ -164,8 +138,6 @@ export const grammar_full_pro = [
     formula: "S + could + V + O",
     use: "Diễn tả khả năng trong quá khứ hoặc lời đề nghị lịch sự.",
     example: "Could you send me the price list?",
-    zh: "你可以把价目表发给我吗？",
-    pinyin: "Nǐ kěyǐ bǎ jiàmùbiǎo fā gěi wǒ ma?",
     vi: "Bạn có thể gửi bảng giá cho tôi được không?"
   },
   {
@@ -176,8 +148,6 @@ export const grammar_full_pro = [
     formula: "S + may/might + V + O",
     use: "Diễn tả khả năng có thể xảy ra.",
     example: "The shipment may arrive tomorrow.",
-    zh: "货物可能明天到。",
-    pinyin: "Huòwù kěnéng míngtiān dào.",
     vi: "Lô hàng có thể tới vào ngày mai."
   },
   {
@@ -188,8 +158,6 @@ export const grammar_full_pro = [
     formula: "S + must + V + O",
     use: "Diễn tả sự bắt buộc hoặc điều rất chắc chắn.",
     example: "You must wear safety gloves.",
-    zh: "你必须戴安全手套。",
-    pinyin: "Nǐ bìxū dài ānquán shǒutào.",
     vi: "Bạn phải đeo găng tay bảo hộ."
   },
   {
@@ -200,8 +168,6 @@ export const grammar_full_pro = [
     formula: "S + have/has to + V + O",
     use: "Diễn tả sự bắt buộc do quy định hoặc hoàn cảnh.",
     example: "We have to finish the order today.",
-    zh: "我们今天必须完成订单。",
-    pinyin: "Wǒmen jīntiān bìxū wánchéng dìngdān.",
     vi: "Chúng tôi phải hoàn thành đơn hàng hôm nay."
   },
   {
@@ -212,8 +178,6 @@ export const grammar_full_pro = [
     formula: "S + should/shouldn't + V + O",
     use: "Diễn tả lời khuyên hoặc đề xuất.",
     example: "You should check the quality again.",
-    zh: "你应该再检查一次质量。",
-    pinyin: "Nǐ yīnggāi zài jiǎnchá yí cì zhìliàng.",
     vi: "Bạn nên kiểm tra chất lượng lại lần nữa."
   },
 
@@ -225,8 +189,6 @@ export const grammar_full_pro = [
     formula: "S + am/is/are + V3",
     use: "Diễn tả hành động bị tác động ở hiện tại.",
     example: "The oil is filtered carefully.",
-    zh: "油被仔细过滤。",
-    pinyin: "Yóu bèi zǐxì guòlǜ.",
     vi: "Dầu được lọc cẩn thận."
   },
   {
@@ -237,8 +199,6 @@ export const grammar_full_pro = [
     formula: "S + was/were + V3",
     use: "Diễn tả hành động bị tác động trong quá khứ.",
     example: "The goods were delivered yesterday.",
-    zh: "货物昨天被送到了。",
-    pinyin: "Huòwù zuótiān bèi sòngdào le.",
     vi: "Hàng hóa đã được giao hôm qua."
   },
   {
@@ -249,8 +209,6 @@ export const grammar_full_pro = [
     formula: "S + modal + be + V3",
     use: "Diễn tả hành động bị tác động với động từ khuyết thiếu.",
     example: "The machine must be cleaned every day.",
-    zh: "机器必须每天被清洗。",
-    pinyin: "Jīqì bìxū měitiān bèi qīngxǐ.",
     vi: "Máy phải được vệ sinh mỗi ngày."
   },
 
@@ -262,8 +220,6 @@ export const grammar_full_pro = [
     formula: "If + present simple, present simple",
     use: "Diễn tả sự thật hiển nhiên hoặc quy luật.",
     example: "If you heat wax, it melts.",
-    zh: "如果你加热蜡，它就会融化。",
-    pinyin: "Rúguǒ nǐ jiārè là, tā jiù huì rónghuà.",
     vi: "Nếu bạn đun nóng sáp, nó sẽ tan chảy."
   },
   {
@@ -274,8 +230,6 @@ export const grammar_full_pro = [
     formula: "If + present simple, will + V",
     use: "Diễn tả điều kiện có thể xảy ra trong tương lai.",
     example: "If it rains, we will stay inside.",
-    zh: "如果下雨，我们就待在里面。",
-    pinyin: "Rúguǒ xiàyǔ, wǒmen jiù dāi zài lǐmiàn.",
     vi: "Nếu trời mưa, chúng tôi sẽ ở trong nhà."
   },
   {
@@ -286,8 +240,6 @@ export const grammar_full_pro = [
     formula: "If + past simple, would + V",
     use: "Diễn tả điều kiện không có thật ở hiện tại.",
     example: "If I had more time, I would learn faster.",
-    zh: "如果我有更多时间，我会学得更快。",
-    pinyin: "Rúguǒ wǒ yǒu gèng duō shíjiān, wǒ huì xué de gèng kuài.",
     vi: "Nếu tôi có nhiều thời gian hơn, tôi sẽ học nhanh hơn."
   },
   {
@@ -298,8 +250,6 @@ export const grammar_full_pro = [
     formula: "If + had + V3, would have + V3",
     use: "Diễn tả điều kiện không có thật trong quá khứ.",
     example: "If we had checked earlier, we would have avoided the mistake.",
-    zh: "如果我们早点检查，就会避免那个错误。",
-    pinyin: "Rúguǒ wǒmen zǎodiǎn jiǎnchá, jiù huì bìmiǎn nàge cuòwù.",
     vi: "Nếu chúng tôi kiểm tra sớm hơn, chúng tôi đã tránh được lỗi đó."
   },
 
@@ -311,8 +261,6 @@ export const grammar_full_pro = [
     formula: "Noun + who + verb...",
     use: "Dùng thay cho người làm chủ ngữ trong mệnh đề quan hệ.",
     example: "The worker who checks the machine is very careful.",
-    zh: "检查机器的工人非常细心。",
-    pinyin: "Jiǎnchá jīqì de gōngrén fēicháng xìxīn.",
     vi: "Người công nhân kiểm tra máy rất cẩn thận."
   },
   {
@@ -323,8 +271,6 @@ export const grammar_full_pro = [
     formula: "Noun + whom + subject + verb...",
     use: "Dùng thay cho người làm tân ngữ trong mệnh đề quan hệ.",
     example: "The customer whom we met was friendly.",
-    zh: "我们见到的客户很友好。",
-    pinyin: "Wǒmen jiàn dào de kèhù hěn yǒuhǎo.",
     vi: "Khách hàng mà chúng tôi gặp rất thân thiện."
   },
   {
@@ -335,8 +281,6 @@ export const grammar_full_pro = [
     formula: "Noun + which + verb...",
     use: "Dùng cho vật hoặc sự việc.",
     example: "The product which sells best is this one.",
-    zh: "卖得最好的产品是这个。",
-    pinyin: "Mài de zuì hǎo de chǎnpǐn shì zhège.",
     vi: "Sản phẩm bán chạy nhất là cái này."
   },
   {
@@ -347,8 +291,6 @@ export const grammar_full_pro = [
     formula: "Noun + whose + noun + verb...",
     use: "Chỉ sự sở hữu.",
     example: "The manager whose office is upstairs is busy.",
-    zh: "办公室在楼上的经理很忙。",
-    pinyin: "Bàngōngshì zài lóushàng de jīnglǐ hěn máng.",
     vi: "Người quản lý có văn phòng ở tầng trên đang bận."
   },
   {
@@ -359,8 +301,6 @@ export const grammar_full_pro = [
     formula: "Noun + that + verb...",
     use: "Dùng thay cho who/which trong nhiều trường hợp.",
     example: "The machine that we bought is expensive.",
-    zh: "我们买的机器很贵。",
-    pinyin: "Wǒmen mǎi de jīqì hěn guì.",
     vi: "Cái máy mà chúng tôi mua rất đắt."
   },
   {
@@ -371,8 +311,6 @@ export const grammar_full_pro = [
     formula: "Essential clause / comma + extra information + comma",
     use: "Phân biệt mệnh đề quan hệ xác định và không xác định.",
     example: "My brother, who lives in Hanoi, is an engineer.",
-    zh: "我哥哥住在河内，他是一名工程师。",
-    pinyin: "Wǒ gēge zhù zài Hénèi, tā shì yì míng gōngchéngshī.",
     vi: "Anh trai tôi, người sống ở Hà Nội, là một kỹ sư."
   },
 
@@ -384,8 +322,6 @@ export const grammar_full_pro = [
     formula: "S + enjoy/avoid/finish + V-ing",
     use: "Một số động từ theo sau là V-ing.",
     example: "I enjoy learning new languages.",
-    zh: "我喜欢学习新语言。",
-    pinyin: "Wǒ xǐhuān xuéxí xīn yǔyán.",
     vi: "Tôi thích học ngôn ngữ mới."
   },
   {
@@ -396,8 +332,6 @@ export const grammar_full_pro = [
     formula: "S + want/need/plan + to V",
     use: "Một số động từ theo sau là to V.",
     example: "We plan to open a new branch.",
-    zh: "我们计划开一家新分店。",
-    pinyin: "Wǒmen jìhuà kāi yì jiā xīn fēndiàn.",
     vi: "Chúng tôi dự định mở một chi nhánh mới."
   },
   {
@@ -408,8 +342,6 @@ export const grammar_full_pro = [
     formula: "stop + V-ing / stop + to V",
     use: "Phân biệt dừng hẳn việc gì và dừng để làm việc khác.",
     example: "He stopped smoking. / He stopped to smoke.",
-    zh: "他戒烟了。/ 他停下来去抽烟。",
-    pinyin: "Tā jièyān le. / Tā tíng xiàlái qù chōuyān.",
     vi: "Anh ấy đã bỏ hút thuốc. / Anh ấy dừng lại để hút thuốc."
   },
   {
@@ -420,8 +352,6 @@ export const grammar_full_pro = [
     formula: "remember + V-ing / remember + to V",
     use: "Phân biệt nhớ đã làm gì và nhớ phải làm gì.",
     example: "I remember meeting him. / Remember to call me.",
-    zh: "我记得见过他。/ 记得给我打电话。",
-    pinyin: "Wǒ jìde jiàn guo tā. / Jìde gěi wǒ dǎ diànhuà.",
     vi: "Tôi nhớ đã gặp anh ấy. / Nhớ gọi cho tôi."
   },
 
@@ -433,8 +363,6 @@ export const grammar_full_pro = [
     formula: "S + be + adj-er + than / more + adj + than",
     use: "So sánh hơn giữa hai người/vật.",
     example: "This machine is faster than that one.",
-    zh: "这台机器比那台更快。",
-    pinyin: "Zhè tái jīqì bǐ nà tái gèng kuài.",
     vi: "Máy này nhanh hơn máy kia."
   },
   {
@@ -445,8 +373,6 @@ export const grammar_full_pro = [
     formula: "S + be + the + adj-est / the most + adj",
     use: "So sánh nhất trong một nhóm.",
     example: "She is the most experienced worker here.",
-    zh: "她是这里最有经验的工人。",
-    pinyin: "Tā shì zhèlǐ zuì yǒu jīngyàn de gōngrén.",
     vi: "Cô ấy là công nhân nhiều kinh nghiệm nhất ở đây."
   },
   {
@@ -457,8 +383,6 @@ export const grammar_full_pro = [
     formula: "S + be + as + adj + as",
     use: "So sánh bằng.",
     example: "This sample is as good as the original.",
-    zh: "这个样品和原件一样好。",
-    pinyin: "Zhège yàngpǐn hé yuánjiàn yíyàng hǎo.",
     vi: "Mẫu này tốt như bản gốc."
   },
 
@@ -470,8 +394,6 @@ export const grammar_full_pro = [
     formula: "Because + clause / clause, so + clause",
     use: "Diễn tả nguyên nhân và kết quả.",
     example: "We stayed inside because it was raining.",
-    zh: "因为下雨，我们待在里面。",
-    pinyin: "Yīnwèi xiàyǔ, wǒmen dāi zài lǐmiàn.",
     vi: "Vì trời mưa nên chúng tôi ở trong nhà."
   },
   {
@@ -482,8 +404,6 @@ export const grammar_full_pro = [
     formula: "Although + clause, clause",
     use: "Diễn tả sự tương phản.",
     example: "Although he was tired, he kept working.",
-    zh: "虽然他很累，但他继续工作。",
-    pinyin: "Suīrán tā hěn lèi, dàn tā jìxù gōngzuò.",
     vi: "Mặc dù anh ấy mệt, anh ấy vẫn tiếp tục làm việc."
   },
   {
@@ -494,8 +414,6 @@ export const grammar_full_pro = [
     formula: "Not only + auxiliary + S + V, but S also + V",
     use: "Nhấn mạnh hai ý cùng đúng.",
     example: "She not only speaks English but also speaks Chinese.",
-    zh: "她不仅会说英语，而且会说中文。",
-    pinyin: "Tā bùjǐn huì shuō Yīngyǔ, érqiě huì shuō Zhōngwén.",
     vi: "Cô ấy không chỉ nói tiếng Anh mà còn nói tiếng Trung."
   },
 
@@ -507,8 +425,6 @@ export const grammar_full_pro = [
     formula: "S + said (that) + clause",
     use: "Tường thuật lại lời nói.",
     example: "He said that the goods were ready.",
-    zh: "他说货已经准备好了。",
-    pinyin: "Tā shuō huò yǐjīng zhǔnbèi hǎo le.",
     vi: "Anh ấy nói rằng hàng đã sẵn sàng."
   },
   {
@@ -519,8 +435,6 @@ export const grammar_full_pro = [
     formula: "S + asked + if/whether / question word + clause",
     use: "Tường thuật lại câu hỏi.",
     example: "She asked whether the payment had arrived.",
-    zh: "她问付款是否已经到账。",
-    pinyin: "Tā wèn fùkuǎn shìfǒu yǐjīng dào zhàng.",
     vi: "Cô ấy hỏi liệu tiền đã vào tài khoản chưa."
   },
 
@@ -532,8 +446,6 @@ export const grammar_full_pro = [
     formula: "S + be + too + adj + to V",
     use: "Quá... để làm gì.",
     example: "The box is too heavy to carry.",
-    zh: "这个箱子太重，搬不动。",
-    pinyin: "Zhège xiāngzi tài zhòng, bān bù dòng.",
     vi: "Cái thùng này quá nặng để mang."
   },
   {
@@ -544,8 +456,6 @@ export const grammar_full_pro = [
     formula: "S + be + adj + enough + to V",
     use: "Đủ... để làm gì.",
     example: "The oil is clean enough to use.",
-    zh: "这种油够干净，可以使用。",
-    pinyin: "Zhè zhǒng yóu gòu gānjìng, kěyǐ shǐyòng.",
     vi: "Loại dầu này đủ sạch để sử dụng."
   },
   {
@@ -556,8 +466,6 @@ export const grammar_full_pro = [
     formula: "S + be + so + adj + that + clause",
     use: "Quá... đến nỗi...",
     example: "He was so busy that he forgot lunch.",
-    zh: "他太忙了，连午饭都忘了。",
-    pinyin: "Tā tài máng le, lián wǔfàn dōu wàng le.",
     vi: "Anh ấy bận đến nỗi quên cả bữa trưa."
   },
 
@@ -569,8 +477,6 @@ export const grammar_full_pro = [
     formula: "Wh-word + auxiliary + S + V?",
     use: "Hỏi thông tin chi tiết.",
     example: "Where do you buy raw materials?",
-    zh: "你在哪里买原材料？",
-    pinyin: "Nǐ zài nǎlǐ mǎi yuán cáiliào?",
     vi: "Bạn mua nguyên liệu ở đâu?"
   },
   {
@@ -581,8 +487,6 @@ export const grammar_full_pro = [
     formula: "Auxiliary + S + V?",
     use: "Câu hỏi có/không.",
     example: "Do you need more wax?",
-    zh: "你需要更多蜡吗？",
-    pinyin: "Nǐ xūyào gèng duō là ma?",
     vi: "Bạn có cần thêm sáp không?"
   },
   {
@@ -593,8 +497,6 @@ export const grammar_full_pro = [
     formula: "Clause, auxiliary + n't / auxiliary + pronoun?",
     use: "Câu hỏi đuôi để xác nhận.",
     example: "You have finished the order, haven't you?",
-    zh: "你已经完成订单了，不是吗？",
-    pinyin: "Nǐ yǐjīng wánchéng dìngdān le, bú shì ma?",
     vi: "Bạn đã hoàn thành đơn hàng rồi, đúng không?"
   },
 
@@ -606,8 +508,6 @@ export const grammar_full_pro = [
     formula: "a/an + singular noun / the + specific noun",
     use: "Dùng mạo từ không xác định và xác định.",
     example: "I need a box. The box is on the table.",
-    zh: "我需要一个箱子。那个箱子在桌子上。",
-    pinyin: "Wǒ xūyào yí gè xiāngzi. Nàge xiāngzi zài zhuōzi shàng.",
     vi: "Tôi cần một cái thùng. Cái thùng ở trên bàn."
   },
   {
@@ -618,8 +518,6 @@ export const grammar_full_pro = [
     formula: "I/me, he/him, she/her, they/them...",
     use: "Phân biệt đại từ làm chủ ngữ và tân ngữ.",
     example: "She called me yesterday.",
-    zh: "她昨天给我打电话了。",
-    pinyin: "Tā zuótiān gěi wǒ dǎ diànhuà le.",
     vi: "Cô ấy đã gọi cho tôi hôm qua."
   },
   {
@@ -630,8 +528,6 @@ export const grammar_full_pro = [
     formula: "my/mine, your/yours, his, her/hers...",
     use: "Diễn tả sự sở hữu.",
     example: "This is my notebook. That one is yours.",
-    zh: "这是我的笔记本。那个是你的。",
-    pinyin: "Zhè shì wǒ de bǐjìběn. Nàge shì nǐ de.",
     vi: "Đây là sổ tay của tôi. Cái kia là của bạn."
   },
 
@@ -643,8 +539,6 @@ export const grammar_full_pro = [
     formula: "in / on / at",
     use: "Dùng với thời gian.",
     example: "The meeting starts at 9 a.m. on Monday in July.",
-    zh: "会议在七月的星期一上午九点开始。",
-    pinyin: "Huìyì zài qī yuè de xīngqīyī shàngwǔ jiǔ diǎn kāishǐ.",
     vi: "Cuộc họp bắt đầu lúc 9 giờ sáng thứ Hai trong tháng 7."
   },
   {
@@ -655,8 +549,6 @@ export const grammar_full_pro = [
     formula: "in / on / at / under / behind / next to",
     use: "Dùng để chỉ vị trí.",
     example: "The documents are on the desk.",
-    zh: "文件在桌子上。",
-    pinyin: "Wénjiàn zài zhuōzi shàng.",
     vi: "Tài liệu ở trên bàn."
   },
 
@@ -668,8 +560,6 @@ export const grammar_full_pro = [
     formula: "Could you + V ... ? / Would you mind + V-ing ... ?",
     use: "Dùng để yêu cầu lịch sự trong công việc.",
     example: "Could you confirm the order quantity?",
-    zh: "你可以确认订单数量吗？",
-    pinyin: "Nǐ kěyǐ quèrèn dìngdān shùliàng ma?",
     vi: "Bạn có thể xác nhận số lượng đơn hàng không?"
   },
   {
@@ -680,8 +570,6 @@ export const grammar_full_pro = [
     formula: "Please + V ... / Make sure + clause",
     use: "Dùng để đưa hướng dẫn hoặc yêu cầu trong công việc.",
     example: "Please check the quality before packing.",
-    zh: "请在包装前检查质量。",
-    pinyin: "Qǐng zài bāozhuāng qián jiǎnchá zhìliàng.",
     vi: "Vui lòng kiểm tra chất lượng trước khi đóng gói."
   },
   {
@@ -692,8 +580,6 @@ export const grammar_full_pro = [
     formula: "First..., then..., after that..., finally...",
     use: "Mô tả quy trình từng bước.",
     example: "First, we filter the oil. Then, we heat it.",
-    zh: "首先，我们过滤油。然后，我们加热它。",
-    pinyin: "Shǒuxiān, wǒmen guòlǜ yóu. Ránhòu, wǒmen jiārè tā.",
     vi: "Đầu tiên, chúng tôi lọc dầu. Sau đó, chúng tôi đun nóng nó."
   },
   {
@@ -704,8 +590,6 @@ export const grammar_full_pro = [
     formula: "He/She/It + V(s/es)",
     use: "Chia động từ hiện tại đơn với ngôi thứ ba số ít.",
     example: "He goes to work every day.",
-    zh: "他每天去上班。",
-    pinyin: "Tā měitiān qù shàngbān.",
     vi: "Anh ấy đi làm mỗi ngày."
   },
   {
@@ -716,8 +600,6 @@ export const grammar_full_pro = [
     formula: "agree là động từ, không dùng với be",
     use: "Sửa lỗi sai rất phổ biến.",
     example: "I agree with you.",
-    zh: "我同意你的看法。",
-    pinyin: "Wǒ tóngyì nǐ de kànfǎ.",
     vi: "Tôi đồng ý với bạn."
   },
   {
@@ -728,8 +610,6 @@ export const grammar_full_pro = [
     formula: "much + uncountable noun / many + countable noun",
     use: "Phân biệt danh từ đếm được và không đếm được.",
     example: "We need much water and many boxes.",
-    zh: "我们需要很多水和很多箱子。",
-    pinyin: "Wǒmen xūyào hěn duō shuǐ hé hěn duō xiāngzi.",
     vi: "Chúng tôi cần nhiều nước và nhiều thùng."
   }
 ];

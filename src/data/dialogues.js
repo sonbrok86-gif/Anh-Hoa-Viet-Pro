@@ -3,166 +3,159 @@ export const dialogues = [
     topic: "Mua hàng",
     level: "basic",
     lines: [
-      { en: "How much is this?", zh: "这个多少钱？", pinyin: "zhè ge duō shǎo qián", vi: "Bao nhiêu?" },
-      { en: "It's 10 dollars.", zh: "十美元", pinyin: "shí měi yuán", vi: "10 đô" },
-      { en: "Can you reduce the price?", zh: "可以便宜一点吗？", pinyin: "kě yǐ pián yi yì diǎn ma", vi: "Giảm giá được không?" },
-      { en: "Okay, 8 dollars.", zh: "可以，八美元", pinyin: "kě yǐ, bā měi yuán", vi: "Ok, 8 đô" }
+      { en: "How much is this?", vi: "Dạ cho hỏi cái này giá bao nhiêu thế ạ?" },
+      { en: "It's 10 dollars.", vi: "Dạ, nó có giá là 10 đô la ạ." },
+      { en: "Can you reduce the price?", vi: "Bạn có thể giảm giá một chút được không?" },
+      { en: "Okay, 8 dollars.", vi: "Được chứ, tôi lấy bạn 8 đô la nhé." }
     ]
   },
   {
     topic: "Công việc",
     level: "business",
     lines: [
-      { en: "We need to improve sales.", zh: "我们需要提高销售", pinyin: "wǒ men xū yào tí gāo xiāo shòu", vi: "Cần tăng doanh số" },
-      { en: "What is the plan?", zh: "计划是什么？", pinyin: "jì huà shì shén me", vi: "Kế hoạch là gì?" },
-      { en: "We will run a campaign.", zh: "我们会做一个活动", pinyin: "wǒ men huì zuò yí gè huó dòng", vi: "Chạy chiến dịch" },
-      { en: "That sounds good.", zh: "听起来不错", pinyin: "tīng qǐ lái bú cuò", vi: "Nghe ổn" }
+      { en: "We need to improve sales.", vi: "Chúng ta cần phải tìm cách nâng cao doanh số bán hàng." },
+      { en: "What is the plan?", vi: "Kế hoạch cụ thể của chúng ta là gì thế?" },
+      { en: "We will run a campaign.", vi: "Chúng ta sẽ chạy một chiến dịch marketing mới." },
+      { en: "That sounds good.", vi: "Nghe có vẻ rất khả thi và ổn đấy." }
     ]
   },
   {
     topic: "Gặp gỡ",
     level: "basic",
     lines: [
-      { en: "Nice to meet you.", zh: "很高兴见到你", pinyin: "hěn gāo xìng jiàn dào nǐ", vi: "Rất vui được gặp bạn" },
-      { en: "Nice to meet you too.", zh: "我也很高兴见到你", pinyin: "wǒ yě hěn gāo xìng jiàn dào nǐ", vi: "Tôi cũng vậy" },
-      { en: "Where are you from?", zh: "你来自哪里？", pinyin: "nǐ lái zì nǎ lǐ", vi: "Bạn đến từ đâu?" },
-      { en: "I am from Vietnam.", zh: "我来自越南", pinyin: "wǒ lái zì yuè nán", vi: "Tôi đến từ Việt Nam" }
+      { en: "Nice to meet you.", vi: "Rất vui được gặp bạn." },
+      { en: "Nice to meet you too.", vi: "Tôi cũng rất vui được gặp bạn." },
+      { en: "Where are you from?", vi: "Cho hỏi bạn đến từ đâu thế?" },
+      { en: "I am from Vietnam.", vi: "Tôi đến từ Việt Nam." }
     ]
   },
-// ===== BATCH 2 =====
-{
-  topic: "Nhà hàng",
-  level: "basic",
-  lines: [
-    { en: "Can I see the menu?", zh: "可以看菜单吗？", pinyin: "kě yǐ kàn cài dān ma", vi: "Cho xem menu" },
-    { en: "What do you recommend?", zh: "你推荐什么？", pinyin: "nǐ tuī jiàn shén me", vi: "Bạn đề xuất gì?" },
-    { en: "I will take this.", zh: "我要这个", pinyin: "wǒ yào zhè ge", vi: "Tôi lấy món này" },
-    { en: "How long will it take?", zh: "要多久？", pinyin: "yào duō jiǔ", vi: "Bao lâu?" },
-    { en: "Thank you.", zh: "谢谢", pinyin: "xiè xiè", vi: "Cảm ơn" }
-  ]
-},
-
-{
-  topic: "Giao hàng",
-  level: "business",
-  lines: [
-    { en: "Has the order been shipped?", zh: "订单发了吗？", pinyin: "dìng dān fā le ma", vi: "Đã gửi hàng chưa?" },
-    { en: "We are processing it.", zh: "我们正在处理", pinyin: "wǒ men zhèng zài chǔ lǐ", vi: "Đang xử lý" },
-    { en: "Please send tracking code.", zh: "请发物流码", pinyin: "qǐng fā wù liú mǎ", vi: "Gửi mã vận đơn" },
-    { en: "You will receive it soon.", zh: "你很快会收到", pinyin: "nǐ hěn kuài huì shōu dào", vi: "Bạn sẽ nhận sớm" },
-    { en: "Thank you for your support.", zh: "感谢支持", pinyin: "gǎn xiè zhī chí", vi: "Cảm ơn đã ủng hộ" }
-  ]
-},
-
-{
-  topic: "Họp công việc",
-  level: "business",
-  lines: [
-    { en: "Let's start the meeting.", zh: "我们开始会议", pinyin: "wǒ men kāi shǐ huì yì", vi: "Bắt đầu họp" },
-    { en: "What is the main goal?", zh: "主要目标是什么？", pinyin: "zhǔ yào mù biāo shì shén me", vi: "Mục tiêu là gì?" },
-    { en: "We need better results.", zh: "我们需要更好的结果", pinyin: "wǒ men xū yào gèng hǎo de jié guǒ", vi: "Cần kết quả tốt hơn" },
-    { en: "We will improve this.", zh: "我们会改进", pinyin: "wǒ men huì gǎi jìn", vi: "Sẽ cải thiện" },
-    { en: "Meeting is finished.", zh: "会议结束", pinyin: "huì yì jié shù", vi: "Kết thúc họp" }
-  ]
-},
-// ===== LONG DIALOGUES =====
-{
-  topic: "Đi làm",
-  level: "business",
-  lines: [
-    { en: "Good morning.", zh: "早上好", vi: "Chào buổi sáng" },
-    { en: "Good morning.", zh: "早上好", vi: "Chào bạn" },
-    { en: "Are you busy today?", zh: "你今天忙吗？", vi: "Hôm nay bận không?" },
-    { en: "Yes, very busy.", zh: "是的，很忙", vi: "Rất bận" },
-    { en: "We have a meeting.", zh: "我们有会议", vi: "Có cuộc họp" },
-    { en: "What time?", zh: "几点？", vi: "Mấy giờ?" },
-    { en: "At 10 AM.", zh: "十点", vi: "10 giờ" },
-    { en: "Okay, I will join.", zh: "好的，我会参加", vi: "Ok tôi tham gia" },
-    { en: "Prepare the report.", zh: "准备报告", vi: "Chuẩn bị báo cáo" },
-    { en: "No problem.", zh: "没问题", vi: "Không vấn đề" }
-  ]
-},
-
-{
-  topic: "Đi ăn",
-  level: "basic",
-  lines: [
-    { en: "Are you hungry?", zh: "你饿了吗？", vi: "Bạn đói không?" },
-    { en: "Yes, very hungry.", zh: "是的，很饿", vi: "Rất đói" },
-    { en: "Let's eat.", zh: "我们去吃饭", vi: "Đi ăn" },
-    { en: "What do you want?", zh: "你想吃什么？", vi: "Bạn muốn ăn gì?" },
-    { en: "I want noodles.", zh: "我要面", vi: "Tôi muốn mì" },
-    { en: "Okay, let's go.", zh: "好，我们走", vi: "Ok đi thôi" },
-    { en: "This place is good.", zh: "这个地方很好", vi: "Chỗ này ngon" },
-    { en: "Yes, I like it.", zh: "是的，我喜欢", vi: "Tôi thích" },
-    { en: "Let's order.", zh: "点菜吧", vi: "Gọi món" },
-    { en: "Done.", zh: "好了", vi: "Xong" }
-  ]
-},// ===== LONG DIALOGUES 4-13 =====
-{
-  topic: "Đi siêu thị",
-  level: "basic",
-  lines: [
-    { en: "Do you need anything?", zh: "你需要什么？", vi: "Bạn cần gì?" },
-    { en: "Yes, I need food.", zh: "是的，我需要食物", vi: "Tôi cần đồ ăn" },
-    { en: "Let's go shopping.", zh: "我们去购物", vi: "Đi mua đồ" },
-    { en: "This is cheap.", zh: "这个很便宜", vi: "Cái này rẻ" },
-    { en: "This is expensive.", zh: "这个很贵", vi: "Cái này đắt" },
-    { en: "Take this one.", zh: "拿这个", vi: "Lấy cái này" },
-    { en: "Okay.", zh: "好的", vi: "Ok" },
-    { en: "Let's pay.", zh: "我们付款", vi: "Thanh toán" },
-    { en: "Cash or card?", zh: "现金还是卡？", vi: "Tiền mặt hay thẻ?" },
-    { en: "Card.", zh: "卡", vi: "Thẻ" }
-  ]
-},
-
-{
-  topic: "Gọi điện",
-  level: "basic",
-  lines: [
-    { en: "Hello.", zh: "喂", vi: "Alo" },
-    { en: "Hi, it's me.", zh: "你好，是我", vi: "Là tôi đây" },
-    { en: "Are you free?", zh: "你有空吗？", vi: "Bạn rảnh không?" },
-    { en: "Yes, I am free.", zh: "我有空", vi: "Tôi rảnh" },
-    { en: "Let's meet.", zh: "我们见面", vi: "Gặp nhau đi" },
-    { en: "Where?", zh: "哪里？", vi: "Ở đâu?" },
-    { en: "At the cafe.", zh: "在咖啡店", vi: "Quán cafe" },
-    { en: "Okay, see you.", zh: "好的，再见", vi: "Ok gặp sau" },
-    { en: "Bye.", zh: "再见", vi: "Bye" },
-    { en: "See you soon.", zh: "待会见", vi: "Gặp sớm" }
-  ]
-},// ===== FINAL LONG DIALOGUES =====
-{
-  topic: "Phỏng vấn",
-  level: "business",
-  lines: [
-    { en: "Tell me about yourself.", zh: "介绍一下你自己", vi: "Giới thiệu bản thân" },
-    { en: "I have 5 years experience.", zh: "我有五年经验", vi: "Tôi có 5 năm kinh nghiệm" },
-    { en: "What are your strengths?", zh: "你的优势是什么？", vi: "Điểm mạnh?" },
-    { en: "I am hardworking.", zh: "我很努力", vi: "Tôi chăm chỉ" },
-    { en: "What about weaknesses?", zh: "缺点呢？", vi: "Điểm yếu?" },
-    { en: "I am improving.", zh: "我在改进", vi: "Đang cải thiện" },
-    { en: "Why do you want this job?", zh: "为什么要这份工作？", vi: "Tại sao chọn job này?" },
-    { en: "I like this company.", zh: "我喜欢这家公司", vi: "Tôi thích công ty" },
-    { en: "We will contact you.", zh: "我们会联系你", vi: "Sẽ liên hệ" },
-    { en: "Thank you.", zh: "谢谢", vi: "Cảm ơn" }
-  ]
-},
-
-{
-  topic: "Du lịch",
-  level: "basic",
-  lines: [
-    { en: "Where are you going?", zh: "你要去哪里？", vi: "Bạn đi đâu?" },
-    { en: "I am going to the airport.", zh: "我要去机场", vi: "Tôi ra sân bay" },
-    { en: "How do you go?", zh: "怎么去？", vi: "Đi bằng gì?" },
-    { en: "By taxi.", zh: "坐出租车", vi: "Taxi" },
-    { en: "How long?", zh: "多久？", vi: "Bao lâu?" },
-    { en: "30 minutes.", zh: "三十分钟", vi: "30 phút" },
-    { en: "That's fast.", zh: "很快", vi: "Nhanh" },
-    { en: "Yes.", zh: "是的", vi: "Ừ" },
-    { en: "Have a good trip.", zh: "旅途愉快", vi: "Chuyến đi vui" },
-    { en: "Thank you.", zh: "谢谢", vi: "Cảm ơn" }
-  ]
-}
+  {
+    topic: "Nhà hàng",
+    level: "basic",
+    lines: [
+      { en: "Can I see the menu?", vi: "Vui lòng cho tôi xem thực đơn được không?" },
+      { en: "What do you recommend?", vi: "Bạn có thể đề xuất món nào ngon ở đây không?" },
+      { en: "I will take this.", vi: "Tôi xin phép lấy món ăn này nhé." },
+      { en: "How long will it take?", vi: "Món này sẽ mất khoảng bao lâu để chuẩn bị vậy?" },
+      { en: "Thank you.", vi: "Tôi xin cảm ơn." }
+    ]
+  },
+  {
+    topic: "Giao hàng",
+    level: "business",
+    lines: [
+      { en: "Has the order been shipped?", vi: "Cho hỏi đơn hàng của tôi đã được gửi đi chưa ạ?" },
+      { en: "We are processing it.", vi: "Dạ, chúng tôi hiện đang trong quá trình xử lý đơn hàng." },
+      { en: "Please send tracking code.", vi: "Vui lòng gửi mã vận đơn giúp tôi nhé." },
+      { en: "You will receive it soon.", vi: "Bạn sẽ nhận được mã vận đơn đó sớm thôi." },
+      { en: "Thank you for your support.", vi: "Cảm ơn bạn đã luôn ủng hộ chúng tôi." }
+    ]
+  },
+  {
+    topic: "Họp công việc",
+    level: "business",
+    lines: [
+      { en: "Let's start the meeting.", vi: "Chúng ta hãy bắt đầu cuộc họp ngay bây giờ." },
+      { en: "What is the main goal?", vi: "Mục tiêu cốt lõi của cuộc họp hôm nay là gì?" },
+      { en: "We need better results.", vi: "Chúng ta cần đạt được kết quả tốt hơn nữa." },
+      { en: "We will improve this.", vi: "Chúng tôi nhất định sẽ cải thiện vấn đề này." },
+      { en: "Meeting is finished.", vi: "Cuộc họp hôm nay đến đây là kết thúc." }
+    ]
+  },
+  {
+    topic: "Đi làm",
+    level: "business",
+    lines: [
+      { en: "Good morning.", vi: "Chào buổi sáng tốt lành." },
+      { en: "Good morning.", vi: "Chào buổi sáng tốt lành nhé." },
+      { en: "Are you busy today?", vi: "Hôm nay bạn có bận rộn nhiều việc không?" },
+      { en: "Yes, very busy.", vi: "Có chứ, hôm nay tôi bận ngập đầu luôn." },
+      { en: "We have a meeting.", vi: "Chúng ta có một cuộc họp quan trọng." },
+      { en: "What time?", vi: "Mấy giờ cuộc họp diễn ra thế?" },
+      { en: "At 10 AM.", vi: "Vào lúc 10 giờ sáng nay nhé." },
+      { en: "Okay, I will join.", vi: "Được rồi, tôi nhất định sẽ tham gia." },
+      { en: "Prepare the report.", vi: "Hãy chuẩn bị tài liệu báo cáo trước nhé." },
+      { en: "No problem.", vi: "Không có vấn đề gì cả, tôi làm ngay." }
+    ]
+  },
+  {
+    topic: "Đi ăn",
+    level: "basic",
+    lines: [
+      { en: "Are you hungry?", vi: "Bạn đã cảm thấy đói bụng chưa?" },
+      { en: "Yes, very hungry.", vi: "Có chứ, tôi đang đói bụng lắm rồi." },
+      { en: "Let's eat.", vi: "Chúng ta cùng đi ăn món gì đó thôi." },
+      { en: "What do you want?", vi: "Bạn đang muốn ăn món gì vậy?" },
+      { en: "I want noodles.", vi: "Tôi đang thèm ăn mì." },
+      { en: "Okay, let's go.", vi: "Được thôi, chúng ta đi ngay nào." },
+      { en: "This place is good.", vi: "Quán ăn này trông có vẻ rất ngon." },
+      { en: "Yes, I like it.", vi: "Đúng vậy, tôi rất thích quán này." },
+      { en: "Let's order.", vi: "Chúng ta gọi món thôi nào." },
+      { en: "Done.", vi: "Gọi món xong rồi đấy." }
+    ]
+  },
+  {
+    topic: "Đi siêu thị",
+    level: "basic",
+    lines: [
+      { en: "Do you need anything?", vi: "Bạn có cần mua thêm gì không?" },
+      { en: "Yes, I need food.", vi: "Có chứ, tôi cần mua một chút đồ ăn." },
+      { en: "Let's go shopping.", vi: "Chúng ta cùng đi mua sắm thôi." },
+      { en: "This is cheap.", vi: "Cái này giá khá rẻ đấy." },
+      { en: "This is expensive.", vi: "Cái kia thì hơi đắt một chút." },
+      { en: "Take this one.", vi: "Hãy chọn mua cái này đi." },
+      { en: "Okay.", vi: "Nhất trí, ok nhé." },
+      { en: "Let's pay.", vi: "Chúng ta đi thanh toán thôi." },
+      { en: "Cash or card?", vi: "Bạn muốn thanh toán bằng tiền mặt hay thẻ?" },
+      { en: "Card.", vi: "Tôi sẽ thanh toán bằng thẻ." }
+    ]
+  },
+  {
+    topic: "Gọi điện",
+    level: "basic",
+    lines: [
+      { en: "Hello.", vi: "Alo, tôi nghe đây." },
+      { en: "Hi, it's me.", vi: "Chào bạn, là tôi đây mà." },
+      { en: "Are you free?", vi: "Bây giờ bạn có đang rảnh không?" },
+      { en: "Yes, I am free.", vi: "Có, hiện tại tôi đang rảnh rỗi." },
+      { en: "Let's meet.", vi: "Chúng ta gặp nhau một chút đi." },
+      { en: "Where?", vi: "Hẹn gặp nhau ở địa điểm nào thế?" },
+      { en: "At the cafe.", vi: "Gặp nhau ở quán cà phê quen thuộc nhé." },
+      { en: "Okay, see you.", vi: "Được rồi, hẹn gặp lại bạn ở đó." },
+      { en: "Bye.", vi: "Chào tạm biệt nhé." },
+      { en: "See you soon.", vi: "Hy vọng sớm gặp lại bạn." }
+    ]
+  },
+  {
+    topic: "Phỏng vấn",
+    level: "business",
+    lines: [
+      { en: "Tell me about yourself.", vi: "Bạn hãy giới thiệu đôi chút về bản thân mình nhé." },
+      { en: "I have 5 years experience.", vi: "Tôi đã có 5 năm kinh nghiệm trong lĩnh vực này." },
+      { en: "What are your strengths?", vi: "Những điểm mạnh nổi trội của bạn là gì?" },
+      { en: "I am hardworking.", vi: "Tôi là một người rất chăm chỉ và có trách nhiệm." },
+      { en: "What about weaknesses?", vi: "Còn về điểm yếu của bạn thì sao?" },
+      { en: "I am improving.", vi: "Tôi đang nỗ lực học hỏi để hoàn thiện bản thân." },
+      { en: "Why do you want this job?", vi: "Tại sao bạn lại mong muốn ứng tuyển công việc này?" },
+      { en: "I like this company.", vi: "Bởi vì tôi rất thích môi trường làm việc ở công ty." },
+      { en: "We will contact you.", vi: "Chúng tôi nhất định sẽ liên hệ lại với bạn sau." },
+      { en: "Thank you.", vi: "Tôi xin chân thành cảm ơn." }
+    ]
+  },
+  {
+    topic: "Du lịch",
+    level: "basic",
+    lines: [
+      { en: "Where are you going?", vi: "Bạn hiện đang chuẩn bị đi đâu thế?" },
+      { en: "I am going to the airport.", vi: "Tôi đang chuẩn bị đi ra sân bay." },
+      { en: "How do you go?", vi: "Bạn di chuyển bằng phương tiện gì?" },
+      { en: "By taxi.", vi: "Tôi sẽ đi bằng xe taxi." },
+      { en: "How long?", vi: "Đi ra đó mất khoảng bao lâu vậy?" },
+      { en: "30 minutes.", vi: "Mất khoảng tầm 30 phút thôi." },
+      { en: "That's fast.", vi: "Thế thì cũng khá nhanh đấy." },
+      { en: "Yes.", vi: "Đúng vậy." },
+      { en: "Have a good trip.", vi: "Chúc bạn có một chuyến đi vui vẻ tốt đẹp nhé!" },
+      { en: "Thank you.", vi: "Tôi xin cảm ơn nhiều." }
+    ]
+  }
 ];

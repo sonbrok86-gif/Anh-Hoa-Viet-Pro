@@ -52,7 +52,7 @@ export default function TopicPager({
               width:
                 totalPages === 0 ? "0%" : `${((page + 1) / totalPages) * 100}%`,
               height: "100%",
-              background: "#2563eb",
+              background: "#0f172a",
             }}
           />
         </div>
